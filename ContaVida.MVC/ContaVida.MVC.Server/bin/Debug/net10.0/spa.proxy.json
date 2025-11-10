@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:58479",
+"RedirectUrl": "",
+"LaunchCommand": "npm start",
+"WorkingDirectory": "C:\\Users\\rolan\\OneDrive\\Escritorio\\ContaVida Code\\ContaVida.MVC\\ContaVida.MVC.Server\\..\\contavida.mvc.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}

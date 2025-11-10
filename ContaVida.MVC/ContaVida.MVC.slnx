@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="contavida.mvc.client/contavida.mvc.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="ContaVida.MVC.Server/ContaVida.MVC.Server.csproj" />
+</Solution>

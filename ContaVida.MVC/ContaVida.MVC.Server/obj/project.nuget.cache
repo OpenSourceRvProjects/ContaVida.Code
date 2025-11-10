@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "9EHyTQwju/M=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\rolan\\OneDrive\\Escritorio\\ContaVida Code\\ContaVida.MVC\\ContaVida.MVC.Server\\ContaVida.MVC.Server.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\rolan\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0-rc.2.25502.107\\microsoft.aspnetcore.openapi.10.0.0-rc.2.25502.107.nupkg.sha512",
+    "C:\\Users\\rolan\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\10.0.0-rc.2.25502.107\\microsoft.aspnetcore.spaproxy.10.0.0-rc.2.25502.107.nupkg.sha512",
+    "C:\\Users\\rolan\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
