@@ -3,5 +3,7 @@
     <Build />
     <Deploy />
   </Project>
+  <Project Path="ContaVida.MVC.Models/ContaVida.MVC.Models.csproj" Id="3df5aa66-f893-425a-9299-ea5c114da623" />
+  <Project Path="ContaVida.MVC.Security/ContaVida.MVC.Security.csproj" Id="2e32e588-6ed1-42bf-93c2-0cf4669923ab" />
   <Project Path="ContaVida.MVC.Server/ContaVida.MVC.Server.csproj" />
 </Solution>
