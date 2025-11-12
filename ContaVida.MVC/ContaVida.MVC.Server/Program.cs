@@ -1,4 +1,6 @@
+using ContaVida.MVC.DataAccess.DataAccess;
 using ContaVida.MVC.Server;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,8 @@ builder.Services.AddSwaggerGen(option =>
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "ContaVida API", Version = "v1" });
 });
 
+builder.Services.AddDbContext<ContaVidaDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
 
 var app = builder.Build();
 
