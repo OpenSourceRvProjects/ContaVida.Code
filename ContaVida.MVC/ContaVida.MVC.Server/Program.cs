@@ -14,7 +14,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddSwaggerGen(option =>
 {
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "ContaVida API", Version = "v1" });
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "ContaVida API " + builder.Environment.EnvironmentName, Version = "v1" });
 });
 
 builder.Services.AddDbContext<ContaVidaDbContext>(options =>
