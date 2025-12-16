@@ -13,6 +13,8 @@ namespace ContaVida.MVC.Server
             services.AddTransient<IAccountUserService, AccountUserService>();
             services.AddTransient<IEncryptCore, EncryptCore>();
             services.AddTransient<IDecryptCore, DecryptCore>();
+            services.AddTransient<ITokenCore, TokenCore>();
+
         }
 
     }

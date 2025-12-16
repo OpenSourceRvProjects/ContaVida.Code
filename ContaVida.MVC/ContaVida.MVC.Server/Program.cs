@@ -1,12 +1,20 @@
 using ContaVida.MVC.DataAccess.DataAccess;
 using ContaVida.MVC.Server;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.InjectServices();
+
+builder.Services.AddHttpContextAccessor();
+
+//this is now obsolete in .NET 10
+//builder.Services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

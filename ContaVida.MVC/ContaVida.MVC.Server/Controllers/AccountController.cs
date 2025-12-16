@@ -1,4 +1,5 @@
 ﻿using ContaVida.MVC.Backend.Infraestructure;
+using ContaVida.MVC.Models.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +34,21 @@ namespace ContaVida.MVC.Server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "Error getting health");
+            }
+        }
+
+        [HttpPost]
+        [Route("signUp")]
+        public async Task<IActionResult> Post([FromBody] RegisterModel newRegister)
+        {
+            try
+            {
+                var result = await _accountService.RegisterUserAccount(newRegister);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

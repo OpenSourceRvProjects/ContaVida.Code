@@ -8,5 +8,6 @@ namespace ContaVida.MVC.Backend.Infraestructure
     public interface IAccountUserService
     {
         Task<StatusPageResponseModel> GetSystemStatus();
+        Task<RegisterResultModel> RegisterUserAccount(RegisterModel newRegister);
     }
 }
