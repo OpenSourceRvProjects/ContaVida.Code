@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using ContaVida.MVC.DataAccess.DataAccess;
 using ContaVida.MVC.Server;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -11,6 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.InjectServices();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+builder.Services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+
 
 //this is now obsolete in .NET 10
 //builder.Services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -29,6 +37,8 @@ builder.Services.AddDbContext<ContaVidaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
 
 var app = builder.Build();
+
+app.UseIpRateLimiting();
 
 app.UseDefaultFiles();
 app.MapStaticAssets();
