@@ -111,6 +111,59 @@ namespace ContaVida.MVC.Backend.Services
             return result;
         }
 
+        public async Task<LoginTokenDataModel> LoginAndRetrieveToken(string username, string password)
+        {
+            var response = new LoginTokenDataModel();
+            var personalProfile = _dbContext.PersonalProfiles.Include(i => i.User).FirstOrDefault(f => f.User.UserName == username || f.User.Email == username);
+            var user = personalProfile?.User;
+            string token = string.Empty;
+
+            if (user == null)
+            {
+                throw new Exception("User does not exist");
+            }
+
+            if (string.IsNullOrWhiteSpace(user.PasswordHash) || string.IsNullOrEmpty(user.Salt))
+            {
+                throw new Exception("Login does not apply to this kind");
+            }
+
+            var isValidPassword = await _decryptCore.ValidatePassword(user.PasswordHash, user.Salt, password);
+
+            if (isValidPassword)
+            {
+                response.Token = GenerateToken(user, personalProfile);
+                response.UserName = user.UserName;
+                response.Name = personalProfile.Name;
+                response.LastName = personalProfile.LastName1 ?? string.Empty;
+                response.IsSysAdmin = user.IsSystemAdmin;
+
+
+                try
+                {
+                    _accessor.HttpContext.Session.SetString("userID", user.Id.ToString());
+                    var newCorrectLogin = new CorrectLogin()
+                    {
+                        Id = Guid.NewGuid(),
+                        UserId = user.Id,
+                        LoginDate = DateTime.Now,
+                        IpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    };
+
+                    _dbContext.Add(newCorrectLogin);
+                    _dbContext.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                }
+
+            }
+
+            return response;
+        }
+
+
+        #region helper methods
         private string GenerateToken(User newUser, PersonalProfile newProfileUser)
         {
             var tokenInfo = new List<KeyValuePair<string, string>>()
@@ -124,6 +177,8 @@ namespace ContaVida.MVC.Backend.Services
             var token = _tokenCore.RunTokenGeneration(tokenInfo, newUser.Id);
             return token;
         }
+
+        #endregion
 
     }
 }

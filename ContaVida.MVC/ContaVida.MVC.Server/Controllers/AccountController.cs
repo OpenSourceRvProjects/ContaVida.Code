@@ -51,5 +51,14 @@ namespace ContaVida.MVC.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> GetToken([FromBody] LoginModel loginModel)
+        {
+            var token = await _accountService.LoginAndRetrieveToken(loginModel.UserName, loginModel.Password);
+            return Ok(token);
+        }
     }
 }
