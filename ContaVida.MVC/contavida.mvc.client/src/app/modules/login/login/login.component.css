@@ -1,0 +1,25 @@
+
+.form-container {
+  max-width: 600px; /* Adjust the max-width as needed */
+  margin: auto;
+  margin-top: 50px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  background-color: white; /* Dark Green background color for the form */
+  color: grey; /* Set text color to white */
+}
+
+.btn-register {
+  background-color: green;
+  color: #ffffff;
+}
+
+  .btn-register:hover {
+    background-color: green;
+  }
+
+.backgroundLookAndFeel {
+  min-height: 100vh; /* Makes sure it covers at least full screen */
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(28,67,41,1) 0%, rgba(36,89,43,1) 0%, rgba(38,95,43,1) 47%, rgba(72,187,50,1) 100%, rgba(0,212,255,1) 100%);
+}

@@ -2,6 +2,7 @@
 using ContaVida.MVC.Models.Account;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace ContaVida.MVC.Server.Controllers
 {
@@ -12,10 +13,13 @@ namespace ContaVida.MVC.Server.Controllers
 
         private IAccountUserService _accountService;
         private readonly IWebHostEnvironment _hostingEnv;
-        public AccountController(IAccountUserService accountUserService, IWebHostEnvironment hostingEnv)
+        private readonly IConfiguration _configuration;
+        public AccountController(IAccountUserService accountUserService, IWebHostEnvironment hostingEnv, IConfiguration configuration)
         {
             _accountService = accountUserService;
             _hostingEnv = hostingEnv;
+            _configuration = configuration;
+
         }
 
         [HttpGet]
@@ -59,6 +63,14 @@ namespace ContaVida.MVC.Server.Controllers
         {
             var token = await _accountService.LoginAndRetrieveToken(loginModel.UserName, loginModel.Password);
             return Ok(token);
+        }
+
+        [HttpGet]
+        [Route("getGoogleClientID")]
+        public IActionResult GetGoogleClientID()
+        {
+            var clientId = _configuration["security:googleClientID"];
+            return Ok(new { googleClientID = clientId });
         }
     }
 }

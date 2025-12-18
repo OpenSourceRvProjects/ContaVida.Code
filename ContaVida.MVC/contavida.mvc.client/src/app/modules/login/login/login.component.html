@@ -1,0 +1,83 @@
+<div class="backgroundLookAndFeel">
+  <div class="container py-5">
+    <!-- <app-environment-banner></app-environment-banner> -->
+
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="form-container">
+          <!-- <form-logo></form-logo> -->
+          <h2 class="text-center mb-3">ContaVida</h2>
+          <h2 class="text-center mb-4">Ingresar</h2>
+          <hr />
+          <div *ngIf="isEnableProviderLogin" class="d-flex justify-content-center my-3">
+            <div id="google-signin-button"></div>
+          </div>
+          <div *ngIf="isEnableProviderLogin" class="d-flex justify-content-center my-3">
+            <button class="btn btn-outline-primary w-40" (click)="loginWithMicrosoft()">
+              <img src="https://img.icons8.com/color/24/000000/microsoft.png" alt="Microsoft logo" style="width: 20px; margin-right: 8px;">
+              Ingresa con Outlook
+            </button>
+          </div>
+
+          <div class="text-center mb-3">
+            <h4 class="text-danger">{{ errorMessage }}</h4>
+          </div>
+          <div *ngIf="!isEnableProviderLogin" class="d-grid my-3">
+            <button class="btn btn-outline-primary w-100" (click)="enableProviderLogin()">
+              <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" style="width: 20px;">
+              <img src="https://img.icons8.com/color/24/000000/microsoft.png" alt="Microsoft logo" style="width: 20px;">
+              <span>Entrar con otro proveedor</span>
+            </button>
+          </div>
+          <!--<div class="d-grid my-3">
+            <button class="btn btn-outline-primary w-100" (click)="triggerGoogleLogin()">
+              <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" style="width: 20px; margin-right: 8px;">
+              Iniciar sesión con Google
+            </button>
+          </div>-->
+          <form *ngIf="!isEnableProviderLogin">
+            <div class="mb-3">
+              <label for="userName" class="form-label">Nickname (Username)</label>
+              <input type="text"
+                     [(ngModel)]="loginModel.userName"
+                     class="form-control text-center"
+                     id="userName"
+                     name="userName"
+                     required />
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña:</label>
+              <input type="password"
+                     [(ngModel)]="loginModel.password"
+                     class="form-control text-center"
+                     id="password"
+                     name="password"
+                     required />
+            </div>
+
+
+            <div *ngIf="!processing" class="col-12 mb-3">
+              <button type="submit" class="btn btn-register w-100" (click)="login()">Ingresar</button>
+            </div>
+
+
+
+
+          </form>
+          <div *ngIf="!processing" class="col-12 text-center">
+            <a href="/register">¿No tienes cuenta? ¡Regístrate!</a>
+          </div>
+          <div *ngIf="!processing" class="col-12 text-center">
+            <a href="/resetPassword">¡Olvidé mi contraseña!</a>
+          </div>
+          <div *ngIf="processing" class="col-12 text-center mt-4">
+            <div style="width: 6rem; height: 6rem;" class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

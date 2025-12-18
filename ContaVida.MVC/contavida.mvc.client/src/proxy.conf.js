@@ -7,6 +7,7 @@ const PROXY_CONFIG = [
   {
     context: [
       "/weatherforecast",
+      "/api/Account/getGoogleClientID",
     ],
     target,
     secure: false
