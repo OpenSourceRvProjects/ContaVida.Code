@@ -6,6 +6,7 @@ import { LoginModule } from './modules/login/login.module';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { RegisterModule } from './modules/register/register.module';
+import { HomeModule } from './modules/home/home.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { RegisterModule } from './modules/register/register.module';
     BrowserModule, HttpClientModule,
     AppRoutingModule,
     LoginModule,
-    RegisterModule
+    RegisterModule,
+    HomeModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
