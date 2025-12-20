@@ -4,6 +4,7 @@
     <Build />
     <Deploy />
   </Project>
+  <Project Path="ContaVida.MVC.Constants/ContaVida.MVC.Constants.csproj" Id="e2043746-e63d-4b27-8ad8-6b4b4f6ac819" />
   <Project Path="ContaVida.MVC.DataAccess/ContaVida.MVC.DataAccess.csproj" Id="4ef8bccf-f4b9-4508-8d3e-1093b23e7eda" />
   <Project Path="ContaVida.MVC.Models/ContaVida.MVC.Models.csproj" Id="3df5aa66-f893-425a-9299-ea5c114da623" />
   <Project Path="ContaVida.MVC.Security/ContaVida.MVC.Security.csproj" Id="2e32e588-6ed1-42bf-93c2-0cf4669923ab" />

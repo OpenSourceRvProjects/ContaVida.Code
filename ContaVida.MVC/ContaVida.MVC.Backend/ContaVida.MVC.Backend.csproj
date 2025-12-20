@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ContaVida.MVC.Constants\ContaVida.MVC.Constants.csproj" />
     <ProjectReference Include="..\ContaVida.MVC.DataAccess\ContaVida.MVC.DataAccess.csproj" />
     <ProjectReference Include="..\ContaVida.MVC.Models\ContaVida.MVC.Models.csproj" />
     <ProjectReference Include="..\ContaVida.MVC.Security\ContaVida.MVC.Security.csproj" />
