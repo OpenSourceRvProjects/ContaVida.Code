@@ -1,12 +1,25 @@
 using AspNetCoreRateLimit;
 using ContaVida.MVC.DataAccess.DataAccess;
 using ContaVida.MVC.Server;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMvc()
+        .AddSessionStateTempDataProvider();
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession();
+
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
 
 // Add services to the container.
 builder.Services.InjectServices();
@@ -33,6 +46,36 @@ builder.Services.AddSwaggerGen(option =>
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "ContaVida API " + builder.Environment.EnvironmentName, Version = "v1" });
 });
 
+var securityKey = builder.Configuration["security:JWT_PrivateKey"];
+var encoding = Encoding.UTF8.GetBytes(securityKey);
+var mySecurityKey = new SymmetricSecurityKey(encoding);
+var issuer = builder.Configuration["security:issuer"];
+var audience = builder.Configuration["security:audience"];
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        RequireExpirationTime = true,
+        ValidIssuer = builder.Configuration["security:issuer"],
+        ValidAudience = builder.Configuration["security:audience"],
+        IssuerSigningKey = mySecurityKey,
+        //https://stackoverflow.com/questions/43045035/jwt-token-authentication-expired-tokens-still-working-net-core-web-api
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
 builder.Services.AddDbContext<ContaVidaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("dbConnection")));
 
@@ -45,8 +88,10 @@ app.MapStaticAssets();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseSession();
 // Configure the HTTP request pipeline.
 app.MapOpenApi();
+app.UseAuthentication();
 
 app.UseHttpsRedirection();
 
