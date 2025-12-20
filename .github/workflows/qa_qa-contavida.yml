@@ -1,4 +1,7 @@
-name: Build and deploy ASP.Net Core + Angular app to Azure Web App - qa-contavida
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy ASP.Net Core app to Azure Web App - qa-contavida
 
 on:
   push:
@@ -9,55 +12,26 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
 
-      # -------------------------------
-      # Install Node for Angular build
-      # -------------------------------
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Angular dependencies
-        working-directory: ContaVida.MVC/contavida.mvc.client
-        run: npm ci
-
-      - name: Build Angular app
-        working-directory: ContaVida.MVC/contavida.mvc.client
-        run: npm run build --prod
-
-      # -------------------------------
-      # Setup .NET Core backend
-      # -------------------------------
-      - name: Setup .NET
+      - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.x'
 
-      - name: Restore backend dependencies
-        run: dotnet restore ContaVida.MVC.slnx
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
         working-directory: ContaVida.MVC
 
-      # -------------------------------
-      # Copy Angular build to wwwroot
-      # -------------------------------
-      - name: Copy Angular to wwwroot
-        run: |
-          mkdir -p ContaVida.MVC.Server/wwwroot
-          xcopy /E /Y /I "contavida.mvc.client/dist" "ContaVida.MVC.Server/wwwroot"
+      - name: dotnet publish
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp" /p:EnvironmentName=QA
         working-directory: ContaVida.MVC
 
-      # -------------------------------
-      # Publish backend including Angular
-      # -------------------------------
-      - name: Publish Website
-        run: dotnet publish ContaVida.MVC.Server -c Release -o "${{env.DOTNET_ROOT}}/myapp"
-        working-directory: ContaVida.MVC
-
-      - name: Upload artifact
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
@@ -66,14 +40,15 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build
-
+    
     steps:
-      - name: Download artifact
+      - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-
+      
       - name: Deploy to Azure Web App
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'qa-contavida'
