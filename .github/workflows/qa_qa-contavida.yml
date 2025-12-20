@@ -18,35 +18,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # -------------------------------
-      # Install Node + Angular Build
-      # -------------------------------
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Angular dependencies
-        working-directory: ContaVida.MVC/contavida.mvc.client
-        run: npm ci
-
-      - name: Build Angular app
-        working-directory: ContaVida.MVC/contavida.mvc.client
-        run: npm run build
-      # -------------------------------
-
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.x'
 
-      # Build backend only (ignore .esproj which fails on GitHub)
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      # ------------------------------------
+      # Build solution WITHOUT restoring deps
+      # ------------------------------------
+      - name: Build with dotnet (skip JS project)
+        run: dotnet build ContaVida.MVC.slnx --configuration Release --no-restore --no-dependencies
         working-directory: ContaVida.MVC
 
+      # ------------------------------------
+      # Publish (will restore only required deps)
+      # ------------------------------------
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp" /p:EnvironmentName=QA
+        run: dotnet publish ContaVida.MVC.slnx -c Release -o "${{env.DOTNET_ROOT}}/myapp" /p:EnvironmentName=QA
         working-directory: ContaVida.MVC
 
       - name: Upload artifact for deployment job
