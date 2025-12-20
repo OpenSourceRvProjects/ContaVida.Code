@@ -13,6 +13,7 @@ import { ModalRelapsesComponent } from '../relapses/modalRelapses';
 @Component({
   selector: 'app-counter-list',
   templateUrl: './counter-list.component.html',
+  styleUrls: ['./counter-list.component.css'],
   standalone: false,
 })
 export class CounterListComponent {
@@ -26,6 +27,7 @@ export class CounterListComponent {
   counterSetting : ICounterPrivacySetModel = <ICounterPrivacySetModel>{}; 
   processing =  false;
   searchText: string = "";
+  
 
   ngOnInit() {
     this.accountService.getMaintenancePage();
@@ -70,11 +72,13 @@ export class CounterListComponent {
       this.filteredCounterList = this.counterList.filter(f=> f.eventName.includes(this.searchText))
   }
 
-  getCountersList(){
+  getCountersList() {
+    this.processing = true;
     this.eventService.getEvents()
     .subscribe({next: (data : any)=> {
       this.counterList =  data;
       this.filteredCounterList = data
+      this.processing = false;
     }, 
     error : (err)=> {
 
