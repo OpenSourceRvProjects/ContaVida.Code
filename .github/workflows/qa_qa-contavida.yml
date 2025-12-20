@@ -46,8 +46,8 @@ jobs:
       # -------------------------------
       - name: Copy Angular to wwwroot
         run: |
-          New-Item -ItemType Directory -Force -Path "ContaVida.MVC.Server/wwwroot"
-          Copy-Item "contavida.mvc.client/dist/*" "ContaVida.MVC.Server/wwwroot" -Recurse -Force
+          mkdir -p ContaVida.MVC.Server/wwwroot
+          xcopy /E /Y /I "contavida.mvc.client/dist" "ContaVida.MVC.Server/wwwroot"
         working-directory: ContaVida.MVC
 
       # -------------------------------
