@@ -1,9 +1,6 @@
 <Solution>
   <Project Path="ContaVida.MVC.Backend/ContaVida.MVC.Backend.csproj" Id="ccc509ce-799f-4453-9472-add2a27b3198" />
-  <Project Path="contavida.mvc.client/contavida.mvc.client.esproj">
-    <Build />
-    <Deploy />
-  </Project>
+
   <Project Path="ContaVida.MVC.DataAccess/ContaVida.MVC.DataAccess.csproj" Id="4ef8bccf-f4b9-4508-8d3e-1093b23e7eda" />
   <Project Path="ContaVida.MVC.Models/ContaVida.MVC.Models.csproj" Id="3df5aa66-f893-425a-9299-ea5c114da623" />
   <Project Path="ContaVida.MVC.Security/ContaVida.MVC.Security.csproj" Id="2e32e588-6ed1-42bf-93c2-0cf4669923ab" />

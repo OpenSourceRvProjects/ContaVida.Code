@@ -23,18 +23,12 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      # ------------------------------------
-      # Build solution WITHOUT restoring deps
-      # ------------------------------------
-      - name: Build with dotnet (skip JS project)
-        run: dotnet build ContaVida.MVC.slnx --configuration Release --no-restore --no-dependencies
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
         working-directory: ContaVida.MVC
 
-      # ------------------------------------
-      # Publish (will restore only required deps)
-      # ------------------------------------
       - name: dotnet publish
-        run: dotnet publish ContaVida.MVC.slnx -c Release -o "${{env.DOTNET_ROOT}}/myapp" /p:EnvironmentName=QA
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp" /p:EnvironmentName=QA
         working-directory: ContaVida.MVC
 
       - name: Upload artifact for deployment job
