@@ -1,0 +1,111 @@
+
+
+<header *ngIf="localStorageService.getUserData() && !localStorageService.isCounterActive()">
+  <nav style="background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(28,67,41,1) 0%, rgba(36,89,43,1) 0%, rgba(38,95,43,1) 47%, rgba(72,187,50,1) 100%, rgba(0,212,255,1) 100%);
+  " class="navbar navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
+    <div class="container-fluid text-center">
+
+      <div class="row justify-content-center">
+        <div class="col-5">
+
+        </div>
+        <div class="col-5">
+
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <h4 style="color: white;padding-left: 25px;" [routerLink]="['/']"> Conta Vida</h4>
+
+      </div>
+
+      <button class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-label="Toggle navigation"
+              [attr.aria-expanded]="false"
+              (click)="toggle()">
+        <span class="navbar-toggler-icon" style="color: white;"></span>
+      </button>
+
+
+      <!-- https://stackoverflow.com/questions/76048115/how-to-make-navbar-in-bootstrap-always-stays-collapsed-no-matter-the-screen-siz -->
+      <div class="collapse navbar-collapse"
+           [ngClass]="{ show: isExpanded }">
+        <ul class="navbar-nav flex-grow">
+
+
+          <li *ngFor="let link of links" class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link" style="color:white" (click)="toggle()" [routerLink]="link.path">{{link.text}}</a>
+          </li>
+          <li>
+            <a class="nav-link" (click)="logout()">Salir</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- <app-environment-banner></app-environment-banner> -->
+</header>
+
+<style>
+
+
+
+
+  body {
+    font-family: "Lato", sans-serif;
+  }
+  
+  .sidenav {
+    /* display: none; */
+    
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 60px;
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+  }
+  
+  .sidenav a:hover {
+    color: gray;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+  </style>
+
+<!-- <div class="container"> 
+  <div *ngIf="isExpanded" id="mySidenav" class="sidenav" style="background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(28,67,41,1) 0%, rgba(36,89,43,1) 0%, rgba(38,95,43,1) 47%, rgba(72,187,50,1) 100%, rgba(0,212,255,1) 100%);
+  ">
+    <a href="javascript:void(0)" class="closebtn" (click)="toggle()">&times;</a>
+    <a *ngFor="let link of links" class="nav-item" [routerLink]="link.path" [routerLinkActive]="['link-active']"  (click)="toggle()">{{link.text}}</a>
+    <a href="#">Salir</a>
+  </div>
+</div>  -->

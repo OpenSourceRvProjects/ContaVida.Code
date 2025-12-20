@@ -7,10 +7,12 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { RegisterModule } from './modules/register/register.module';
 import { HomeModule } from './modules/home/home.module';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
 @NgModule({
   declarations: [
-    App
+    App,
+    NavMenuComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
