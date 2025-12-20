@@ -1,0 +1,61 @@
+<br>
+<div *ngIf="processing" class=" d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+        <div class="border border-3 border-success"></div>
+            <div class="mb-4 text-center">
+                <br>
+                <div  class="d-flex justify-content-center">
+                    <div style="width: 6rem; height: 6rem;" class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="text-center">
+                <h1>Eliminando...</h1>
+                <p>Ésto tomara un momento</p>
+            </div>
+        </div>
+    </div>
+  </div>
+
+<div *ngIf="!processing" >
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Eliminar {{counterEventToDelete.eventName}}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-container" style="margin-top: 0px;">
+        <div class="alert alert-danger">
+        <h5 style="color: rgb(100, 8, 8);">Eliminar éste evento causará que no se pueda recuperar de ningun modo, así como los registros de recaídas o episodios.
+            Para confirmar que quieres continuar escribe el siguiente código de seguridad y haz click en "Eliminar"
+        </h5>
+        <br>
+    </div>
+    <!-- https://bbbootstrap.com/snippets/bootstrap-mobile-phone-verification-form-using-otp-78737873 -->
+    <!-- <div class="d-flex justify-content-center align-items-center container">
+            <div class="card">
+                <div class="d-flex flex-row mt-5">
+                    <div style="margin-right: 12px; margin-left: 12px;" *ngFor="let char of uiTokenDelete.split('')">
+                        <input style="text-align: center;"  disabled type="text" [ngModel]="char"  class="form-control">
+                    </div>
+                </div>
+        </div>
+    </div> -->
+    
+        <div class="d-flex justify-content-center align-items-center container">
+            <div class="card">
+                <div class="d-flex flex-row mt-5">
+                        <input style="text-align: center; font-weight: bold;" *ngFor="let char of uiTokenDelete.split('')" disabled type="text" [ngModel]="char"  class="form-control">
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div style="text-align: center;">
+            <h5>Escribe el código aqui</h5>
+            <input style="width: 226px; margin: auto; text-align: center;" [(ngModel)]="userTokenUi" type="text" class="form-control">
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-warning" (click)="activeModal.close('Save click')">Cancelar</button>
+      <button type="button" *ngIf="userTokenUi === uiTokenDelete" (click)="deleteEventCounter()" class="btn btn-danger">ELIMINAR</button>
+    </div>
+</div>

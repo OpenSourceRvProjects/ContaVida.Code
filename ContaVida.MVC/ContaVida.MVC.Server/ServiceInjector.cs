@@ -11,6 +11,7 @@ namespace ContaVida.MVC.Server
         public static void InjectServices(this IServiceCollection services)
         {
             services.AddTransient<IAccountUserService, AccountUserService>();
+            services.AddTransient<IEventCounterService, EventCounterService>();
             services.AddTransient<IEncryptCore, EncryptCore>();
             services.AddTransient<IDecryptCore, DecryptCore>();
             services.AddTransient<ITokenCore, TokenCore>();

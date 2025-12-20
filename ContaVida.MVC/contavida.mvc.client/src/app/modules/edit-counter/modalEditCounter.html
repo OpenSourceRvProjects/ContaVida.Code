@@ -1,0 +1,112 @@
+<br>
+<div *ngIf="processing" class=" d-flex justify-content-center align-items-center">
+  <div class="col-md-6">
+      <div class="border border-3 border-success"></div>
+      <div class="card  bg-white shadow p-5">
+          <div class="mb-4 text-center">
+              <div  class="d-flex justify-content-center">
+  
+                  <div style="width: 6rem; height: 6rem;" class="spinner-border text-success" role="status">
+                  <span class="visually-hidden">Loading...</span>
+              </div>
+          </div>
+          <div class="text-center">
+              <h1>Modificando tu evento...</h1>
+              <p>Ésto tomara un momento</p>
+          </div>
+      </div>
+  </div>
+</div>
+</div>
+<br>
+<div *ngIf="!processing" >
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Editar {{selectedCounterToEdit.eventName}}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-container" style="margin-top: 0px;">
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label for="firstName" class="form-label">Nombre evento</label>
+              <input type="text" [(ngModel)]="selectedDetailedCounter.name" class="form-control" id="firstName" name="firstName" required>
+            </div>
+            <div class="col-md-6">
+              <label for="lastName" class="form-label">Año evento:</label>
+              <input type="number" [(ngModel)]="selectedDetailedCounter.year" class="form-control" id="lastName" name="lastName" required>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+
+            <div class="col-md-6 mb-3">
+              <label for="month" class="form-label">Mes evento:</label>
+              <select class="form-control" [(ngModel)]="selectedMonthToDetailCounter" name="selector1">
+                <option *ngFor="let m of monthsForEditMode" [ngValue]="m">
+                  {{m.text}}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="day" class="form-label">Día evento</label>
+              <input type="number" min="1" max="31" [(ngModel)]="selectedDetailedCounter.day" class="form-control" id="day" name="day" required>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label for="day" class="form-label">Hora</label>
+              <select class="form-control" [(ngModel)]="selectedHourToDetailedCounter" name="selector2">
+                <option *ngFor="let h of hoursForEditMode" [ngValue]="h">
+                  {{h.text}}
+                </option>
+              </select>
+
+            </div>
+            <div class="col-md-6">
+              <label for="day" class="form-label">Minutos</label>
+              <input type="number" [(ngModel)]="selectedDetailedCounter.minutes" class="form-control" id="userName" name="minutes" required>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label style="padding-right: 10px;" for="relapse" class="form-label">¿Es recaida?</label>
+              <input type="checkbox" name="relapse" [(ngModel)]="isRelapse">
+
+            </div>
+          </div>
+
+          <div *ngIf="isRelapse" class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label style="padding-right: 10px;" for="relapseReason" class="form-label">Motivo de recaida</label>
+              <select class="form-control" [(ngModel)]="selectedRelapseReason" name="selector3">
+                <option *ngFor="let r of relapseReasonsList" [ngValue]="r">
+                  {{r.text}}
+                </option>
+              </select>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label style="padding-right: 10px;" for="relapseMessage" class="form-label">¿Algún comentario?</label>
+              <textarea class="form-control" name="relapseComment" [(ngModel)]="relapseComment"></textarea>
+
+            </div>
+          </div>
+
+          <div class="text-center">
+          </div>
+          <br>
+
+        </form>
+
+       
+    </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="activeModal.close('Save click')">Cancelar</button>
+      <button type="button" class="btn btn-outline-success" (click)="editSelectedCounter()">Guardar</button>
+    </div>
+</div>
