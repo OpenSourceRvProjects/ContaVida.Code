@@ -53,8 +53,9 @@ export class EventService {
   editEventCounter(eventID: string, isRelapse: boolean, eventCounter: ICounterDataModel, selectedRelapseReason: TextValueModel, relapseMessage: string) {
     var body = eventCounter;
     debugger;
+    //TODO, fix selectedRelapseReason
     return this.http.put(this.baseUrl + "api/EventCounter/editCounterEvent?id=" + eventID + "&isRelapse=" + isRelapse
-      + "&relapseMessage=" + relapseMessage + "&relapseReason=" + selectedRelapseReason.value, body)
+      + "&relapseMessage=" + relapseMessage + "&relapseReason=" + (selectedRelapseReason.value == undefined ? 1 : selectedRelapseReason.value), body)
   }
 
   deleteEventCounter(eventID: string ){

@@ -111,7 +111,12 @@ namespace ContaVida.MVC.Server.Controllers
         [Route("editCounterEvent")]
         [LoggedUserDataFilter]
 
-        public async Task<IActionResult> PutEvent(Guid id, [FromBody] CounterDataModel eventObject, bool isRelapse = false, string relapseMessage = null, int? relapseReason = null)
+        public async Task<IActionResult> PutEvent(
+        [FromQuery] Guid id,
+        [FromBody] CounterDataModel eventObject,
+        [FromQuery] bool isRelapse = false,
+        [FromQuery] string relapseMessage = null,
+        [FromQuery] int? relapseReason = null)
         {
             await _eventService.UpdateEventCounter(id, eventObject, isRelapse, relapseMessage, relapseReason);
             return Ok();
