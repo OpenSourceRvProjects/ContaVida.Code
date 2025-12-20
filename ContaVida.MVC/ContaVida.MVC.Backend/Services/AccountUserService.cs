@@ -163,6 +163,67 @@ namespace ContaVida.MVC.Backend.Services
         }
 
 
+        public async Task<GoogleUserInfo> VerifyGoogleToken(string idToken)
+        {
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"https://oauth2.googleapis.com/tokeninfo?id_token={idToken}");
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var json = await response.Content.ReadAsStringAsync();
+            var googleInfo = JsonSerializer.Deserialize<GoogleUserInfo>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return googleInfo;
+        }
+
+        public async Task<LoginTokenDataModel> ExternalVendorLoginAndRetrieveToken(string username)
+        {
+            var response = new LoginTokenDataModel();
+            var personalProfile = _dbContext.PersonalProfiles.Include(i => i.User).FirstOrDefault(f => f.User.UserName == username || f.User.Email == username);
+            var user = personalProfile.User;
+            string token = string.Empty;
+
+            if (user == null)
+            {
+                throw new Exception("User does not exist");
+            }
+
+            response.Token = GenerateToken(user, personalProfile);
+            response.UserName = user.UserName;
+            response.Name = personalProfile.Name;
+            response.LastName = personalProfile.LastName1 ?? string.Empty;
+            response.IsSysAdmin = user.IsSystemAdmin;
+
+
+            try
+            {
+                _accessor.HttpContext.Session.SetString("userID", user.Id.ToString());
+                var newCorrectLogin = new CorrectLogin()
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = user.Id,
+                    LoginDate = DateTime.Now,
+                    IpAddress = _accessor.HttpContext.Connection.RemoteIpAddress.ToString(),
+                };
+
+                await _dbContext.AddAsync(newCorrectLogin);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+            }
+
+
+            return response;
+        }
+        public void Logout()
+        {
+            _accessor.HttpContext.Session.Remove("userID");
+
+        }
+
+
         #region helper methods
         private string GenerateToken(User newUser, PersonalProfile newProfileUser)
         {

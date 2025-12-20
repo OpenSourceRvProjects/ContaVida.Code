@@ -10,5 +10,7 @@ namespace ContaVida.MVC.Backend.Infraestructure
         Task<StatusPageResponseModel> GetSystemStatus();
         Task<RegisterResultModel> RegisterUserAccount(RegisterModel newRegister);
         Task<LoginTokenDataModel> LoginAndRetrieveToken(string username, string password);
+        Task<GoogleUserInfo> VerifyGoogleToken(string idToken);
+        Task<LoginTokenDataModel> ExternalVendorLoginAndRetrieveToken(string username);
     }
 }

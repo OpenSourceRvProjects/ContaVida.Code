@@ -12,12 +12,12 @@
           <div *ngIf="isEnableProviderLogin" class="d-flex justify-content-center my-3">
             <div id="google-signin-button"></div>
           </div>
-          <div *ngIf="isEnableProviderLogin" class="d-flex justify-content-center my-3">
+          <!--<div *ngIf="isEnableProviderLogin" class="d-flex justify-content-center my-3">
             <button class="btn btn-outline-primary w-40" (click)="loginWithMicrosoft()">
               <img src="https://img.icons8.com/color/24/000000/microsoft.png" alt="Microsoft logo" style="width: 20px; margin-right: 8px;">
               Ingresa con Outlook
             </button>
-          </div>
+          </div>-->
 
           <div class="text-center mb-3">
             <h4 class="text-danger">{{ errorMessage }}</h4>
@@ -25,7 +25,7 @@
           <div *ngIf="!isEnableProviderLogin" class="d-grid my-3">
             <button class="btn btn-outline-primary w-100" (click)="enableProviderLogin()">
               <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" style="width: 20px;">
-              <img src="https://img.icons8.com/color/24/000000/microsoft.png" alt="Microsoft logo" style="width: 20px;">
+              <!--<img src="https://img.icons8.com/color/24/000000/microsoft.png" alt="Microsoft logo" style="width: 20px;">-->
               <span>Entrar con otro proveedor</span>
             </button>
           </div>
