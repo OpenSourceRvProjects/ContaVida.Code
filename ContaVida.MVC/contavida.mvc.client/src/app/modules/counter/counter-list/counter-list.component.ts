@@ -61,6 +61,7 @@ export class CounterListComponent {
   }
 
   searchKey(data: string){
+    debugger
     this.searchText = data;
 
     if (this.searchText == '')
