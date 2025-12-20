@@ -1,0 +1,46 @@
+
+<div class="container">
+  <button type="button" (click)="router.navigate(['/counter/add'])" class="btn btn-outline-success float-end" aria-label="Close">
+   <i class="fa fa-plus"></i> Agregar nuevo
+  </button>
+</div>
+<br>
+<br>
+<div class="container input-group">
+  <div class="input-group-prepend">
+    <span style="height: 44px;" class="input-group-text"><i class="fa fa-search"></i></span>
+    </div>
+  <input class="form-control" type="text" [ngModel]="searchText" (ngModelChange)="searchKey($event)"  name="search"  autocomplete="off" placeholder="Busca tu evento">
+</div>
+
+<div class="container table-responsive">
+    <table class="table caption-top">
+        <caption>Tus contadores</caption>
+        <thead class="table-success">
+          <tr>
+            <th scope="col">Nombre evento</th>
+            <th scope="col">Fecha evento</th>
+            <th style="text-align: center;" scope="col">Público</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <!-- <th>Eventos/Recaidas</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of filteredCounterList; index as i">
+            <td style="font-size: small;"><a href="counter/myCounter?id={{e.id}}"> {{e.eventName}}</a></td>
+            <td style="font-size: small;">{{e.dateString}}</td>
+            <td style="text-align: center;"><input (change)="checkboxChange(e)" [(ngModel)]="e.isPublic" type="checkbox"></td>
+            <td>
+                <!-- <app-copy-link *ngIf="e.isPublic" [counterID]="e.id"></app-copy-link> -->
+            </td>
+            <td><i class="fa fa-pencil" (click)="openEditPopUp(e)"></i></td>
+            <td><i title="Recaidas/Eventos" class="fa fa-bar-chart" (click)="openRelapsesPopUp(e)"></i></td>
+            <td><i class="fa fa-ban" style="color: red;" (click)="openDeletePopUp(e)"></i></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
