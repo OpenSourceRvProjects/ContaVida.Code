@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-// import { EventService } from 'src/app/Services/Events/event.service';
-// import { LocalStorageService } from 'src/app/Services/Storage/local-storage.service';
-// import { AccountService } from '../../Services/Accounts/account.service';
+import { AccountService } from '../../services/Accounts/account.service';
+import { EventService } from '../../services/Events/event.service';
+import { LocalStorageService } from '../../services/Storage/local-storage.service';
 
 interface IResume {
   eventsCount : number;
@@ -17,21 +17,21 @@ export class HomeComponent {
 
   username?: string;
 
-//   constructor(private localStorage: LocalStorageService, private eventService: EventService, private accountService: AccountService) {
-//   }
+   constructor(private localStorage: LocalStorageService, private eventService: EventService, private accountService: AccountService) {
+   }
 
-//   countersResume: IResume = <IResume> { eventsCount : 0, relapsesCount: 0}
+   countersResume: IResume = <IResume> { eventsCount : 0, relapsesCount: 0}
 
-//   ngOnInit() {
-//     this.accountService.getMaintenancePage();
-//     this.localStorage.desactivateCounterView();
-//     this.username = "";
-//     this.username = this.localStorage.getUserData().userName;
-//     this.eventService.getEventsResume()
-//     .subscribe({next: (data: any)=>{
-//       this.countersResume = data;
-//     }, error: (err)=> {
+   ngOnInit() {
+     this.accountService.getMaintenancePage();
+     this.localStorage.desactivateCounterView();
+     this.username = "";
+     this.username = this.localStorage.getUserData().userName;
+     this.eventService.getEventsResume()
+     .subscribe({next: (data: any)=>{
+       this.countersResume = data;
+     }, error: (err)=> {
 
-//     }})
-//   }
+     }})
+   }
 }
