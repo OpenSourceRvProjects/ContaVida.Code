@@ -6,15 +6,20 @@
 
   .welcome-wrapper {
     text-align: center;
-    margin-top: 18vh;
-    animation: fadeIn 0.6s ease;
+    margin-top: 2vh; /* was 18vh */
+    animation: fadeIn 5s ease;
   }
 
   .welcome-card {
+    width: 100%;
     background: white;
     border-radius: 18px;
-    padding: 40px 30px;
+    padding: 60px 30px;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .welcome-logo {
@@ -54,7 +59,7 @@
   }
 
     .stats-row:hover {
-      transform: scale(1.02);
+      transform: scale(1.10);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
     }
 
@@ -111,16 +116,16 @@
 <div class="container welcome-wrapper">
 
   <!-- Welcome header card -->
-  <div class="welcome-card mx-auto" style="max-width: 600px;">
+  <div class="welcome-card mx-auto w-100">
 
     <div class="welcome-logo">
-      <!--<form-logo></form-logo>-->
+      <form-logo></form-logo>
     </div>
 
     <div class="welcome-text">
       Bienvenido {{username}} 👋
       <br>
-      a <span class="text-success">Life Counter</span>
+      a tu app <span class="text-success">ContaVida</span>
     </div>
 
   </div>
@@ -133,15 +138,14 @@
       <h5 class="text-center">Tus números</h5>
 
       <!-- Counters -->
+      <a   [routerLink]="['/counter/list']" class="text-decoration-none">
       <div class="stats-row mb-3">
-
         <div class="stats-box events-box">
           {{countersResume.eventsCount.toString().padStart(3, "0")}}
         </div>
-
         <p class="stats-label">Contadores</p>
-
       </div>
+      </a>
 
       <!-- Relapses -->
       <div class="stats-row">

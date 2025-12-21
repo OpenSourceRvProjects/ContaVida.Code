@@ -11,6 +11,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { CounterModule } from './modules/counter/counter.module';
 import { NgModule } from '@angular/core';
 import { AuthInterceptorService } from './services/AuthInterceptorService';
+import { SharedModule } from './modules/shared/shared.module.';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AuthInterceptorService } from './services/AuthInterceptorService';
     LoginModule,
     RegisterModule,
     HomeModule,
-    CounterModule
+    CounterModule,
+    SharedModule
   ],
   providers: [
    {
