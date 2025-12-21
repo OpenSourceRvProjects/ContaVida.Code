@@ -11,12 +11,14 @@ import { ModalRelapsesComponent } from './relapses/modalRelapses';
 import { ModalDeleteCounterComponent } from './delete-counter/modalDeleteCounter';
 import { ModalEditComponent } from '../edit-counter/modalEditCounter';
 import { CounterRoutingModule } from './counter-routing.module';
+import { MyCounterComponent } from './my-counter/my-counter.component';
+import { SharedModule } from '../shared/shared.module.';
 
 @NgModule({
   declarations: [
     // AddCounterComponent,
     CounterListComponent,
-    // MyCounterComponent,
+    MyCounterComponent,
     ModalEditComponent,
     ModalRelapsesComponent,
     ModalDeleteCounterComponent,
@@ -26,7 +28,7 @@ import { CounterRoutingModule } from './counter-routing.module';
     FormsModule,
     CommonModule,
     // EnvironmentModule,
-    // SharedModule,
+    SharedModule,
     NgbModule
   ]
 })
