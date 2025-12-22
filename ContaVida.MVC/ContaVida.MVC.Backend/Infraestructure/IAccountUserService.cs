@@ -12,5 +12,8 @@ namespace ContaVida.MVC.Backend.Infraestructure
         Task<LoginTokenDataModel> LoginAndRetrieveToken(string username, string password);
         Task<GoogleUserInfo> VerifyGoogleToken(string idToken);
         Task<LoginTokenDataModel> ExternalVendorLoginAndRetrieveToken(string username);
+        Task SendPasswordResetEmail(string email);
+        Task<bool> ChangePasswordWithRequestLink(Guid requestID, string newPassword);
+        Task<bool> ValidateRecoveryRequestID(Guid requestID);
     }
 }

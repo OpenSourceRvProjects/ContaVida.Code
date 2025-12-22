@@ -1,7 +1,9 @@
 ﻿using ContaVida.MVC.Backend.Infraestructure;
 using ContaVida.MVC.Backend.Services;
+using ContaVida.MVC.EmailSender;
 using ContaVida.MVC.Security.Core;
 using ContaVida.MVC.Security.Infraestructure;
+using NETCore.MailKit.Core;
 
 namespace ContaVida.MVC.Server
 {

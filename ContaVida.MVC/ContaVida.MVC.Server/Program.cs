@@ -1,5 +1,7 @@
 using AspNetCoreRateLimit;
 using ContaVida.MVC.DataAccess.DataAccess;
+using ContaVida.MVC.EmailSender;
+using ContaVida.MVC.Models.Email;
 using ContaVida.MVC.Server;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -20,6 +22,13 @@ builder.Services.AddSession();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
+
+var emailConfig = builder.Configuration
+        .GetSection("EmailConfiguration")
+        .Get<EmailConfigurationModel>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+builder.Services.AddSingleton(emailConfig);
 
 // Add services to the container.
 builder.Services.InjectServices();

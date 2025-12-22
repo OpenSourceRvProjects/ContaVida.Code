@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using ContaVida.MVC.Security.Infraestructure;
+using ContaVida.MVC.Models.Email;
+using ContaVida.MVC.EmailSender;
 
 namespace ContaVida.MVC.Backend.Services
 {
@@ -18,15 +20,17 @@ namespace ContaVida.MVC.Backend.Services
         private IEncryptCore _encryptCore;
         private IDecryptCore _decryptCore;
         private ITokenCore _tokenCore;
+        private IEmailSender _emailService;
 
         public AccountUserService(ContaVidaDbContext dbContext, IHttpContextAccessor accessor, 
-            IEncryptCore encryptCore, IDecryptCore decryptCore, ITokenCore tokenCore)
+            IEncryptCore encryptCore, IDecryptCore decryptCore, ITokenCore tokenCore, IEmailSender emailService )
         {
             _dbContext = dbContext;
             _encryptCore = encryptCore;
             _accessor = accessor;
             _decryptCore = decryptCore;
             _tokenCore = tokenCore;
+            _emailService = emailService;
         }
 
         public async Task<StatusPageResponseModel> GetSystemStatus()
@@ -223,6 +227,95 @@ namespace ContaVida.MVC.Backend.Services
 
         }
 
+        public async Task SendPasswordResetEmail(string email)
+        {
+            var userAccount = await _dbContext.Users.Where(x => x.Email == email).ToListAsync();
+            if (userAccount.Count > 0)
+            {
+                var content = "<h1>Recupera tu contraseña</h1><br>";
+
+                foreach (var user in userAccount)
+                {
+
+                    var passwordChangeRequest = new ResetLoginPassword()
+                    {
+                        Id = Guid.NewGuid(),
+                        CreationDate = DateTime.Now,
+                        ExpirationDate = DateTime.Now.AddHours(24),
+                        UserId = user.Id
+                    };
+
+                    _dbContext.Add(passwordChangeRequest);
+                    await _dbContext.SaveChangesAsync();
+
+                    var request = _accessor.HttpContext.Request;
+                    var currentBaseURL = $"{request.Scheme}://{request.Host}/resetPassword?id=" + passwordChangeRequest.Id;
+
+                    content += $"<table style='border-collapse: collapse;width: 100%;'>" +
+                        $"<tr>" +
+                        $"<th style='border: 1px solid #dddddd;text-align: left;padding: 8px;'>Usuario</th> " +
+                        $"<th style='border: 1px solid #dddddd;text-align: left;padding: 8px;'>Link</th>" +
+                        $"</tr>" +
+                        $"<tr>" +
+                        $"<td style='border: 1px solid #dddddd;text-align: left;padding: 8px;'>" + user.UserName + "</td>" +
+                        $"<td style='border: 1px solid #dddddd;text-align: left;padding: 8px;'><a href='" + currentBaseURL + "'>Link de recuperación: " + passwordChangeRequest.Id.ToString() + "</a></td>" +
+                        $"</tr>" +
+                        $"</table>";
+                }
+
+                var message = new MessageModel(new string[] { userAccount.First().Email }, "Recupera tu contraseña", content);
+                _emailService.SendEmail(message);
+            }
+        }
+
+        public async Task<bool> ValidateRecoveryRequestID(Guid requestID)
+        {
+            var result = false;
+            var request = await _dbContext.ResetLoginPasswords.FirstOrDefaultAsync(f => f.Id == requestID);
+            if (request == null)
+            {
+                return result;
+            }
+
+            if (request.ExpirationDate < DateTime.Now)
+            {
+                return result;
+            }
+
+            result = true;
+            return result;
+        }
+
+
+        public async Task<bool> ChangePasswordWithRequestLink(Guid requestID, string newPassword)
+        {
+            var request = _dbContext.ResetLoginPasswords.FirstOrDefault(f => f.Id == requestID);
+
+            if (request != null && request.ExpirationDate > DateTime.Now)
+            {
+                await UpdateUserPasswordByID(newPassword, request.UserId);
+
+                request.ExpirationDate = DateTime.Now.AddDays(-1);
+
+                await _dbContext.SaveChangesAsync();
+                return true;
+
+            }
+
+            return false;
+
+        }
+
+        private async Task UpdateUserPasswordByID(string newPassword, Guid userID)
+        {
+            var encryptResult = await _encryptCore.RunEncrypt(newPassword);
+            var user = _dbContext.Users.FirstOrDefault(f => f.Id == userID);
+
+            user.PasswordHash = encryptResult.EncodeddPassword;
+            user.Salt = encryptResult.Salt;
+            await _dbContext.SaveChangesAsync();
+
+        }
 
         #region helper methods
         private string GenerateToken(User newUser, PersonalProfile newProfileUser)

@@ -110,5 +110,38 @@ namespace ContaVida.MVC.Server.Controllers
             var response = await _accountService.ExternalVendorLoginAndRetrieveToken(googleUser.Email);
             return (Ok(response));
         }
+
+
+        [HttpGet]
+        [Route("validateRecoveryRequestID")]
+        public async Task<ActionResult> ResetPassword(Guid requestID)
+        {
+            var isValidID = await _accountService.ValidateRecoveryRequestID(requestID);
+            return Ok(isValidID);
+        }
+
+
+        [HttpGet]
+        [Route("resetPassword")]
+        public async Task<ActionResult> ResetPassword(string email)
+        {
+            try
+            {
+                await _accountService.SendPasswordResetEmail(email);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("changePasswordWithURL")]
+        public async Task<ActionResult> ChangePasswordURL(Guid id, string password)
+        {
+            var result = await _accountService.ChangePasswordWithRequestLink(id, password);
+            return Ok(result);
+        }
     }
 }
