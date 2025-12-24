@@ -12,6 +12,7 @@ import { CounterModule } from './modules/counter/counter.module';
 import { NgModule } from '@angular/core';
 import { AuthInterceptorService } from './services/AuthInterceptorService';
 import { SharedModule } from './modules/shared/shared.module.';
+import { ProfileModule } from './modules/profile/profile.module';
 
 @NgModule({
   declarations: [
@@ -22,10 +23,12 @@ import { SharedModule } from './modules/shared/shared.module.';
     BrowserModule, HttpClientModule,
     AppRoutingModule,
     LoginModule,
-    RegisterModule,
     HomeModule,
     CounterModule,
-    SharedModule
+    SharedModule,
+    ProfileModule,
+    RegisterModule,
+
   ],
   providers: [
    {

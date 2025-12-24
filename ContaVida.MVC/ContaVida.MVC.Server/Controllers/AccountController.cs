@@ -1,5 +1,7 @@
 ﻿using ContaVida.MVC.Backend.Infraestructure;
 using ContaVida.MVC.Models.Account;
+using ContaVida.MVC.Server.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -142,6 +144,26 @@ namespace ContaVida.MVC.Server.Controllers
         {
             var result = await _accountService.ChangePasswordWithRequestLink(id, password);
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("changePassword")]
+        [LoggedUserDataFilter]
+        [ExceptionManager]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
+        {
+            await _accountService.ChangePassword(changePasswordModel.OldPassword, changePasswordModel.NewPassword);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("impersonate")]
+        [LoggedUserDataFilter]
+        public async Task<IActionResult> Impersonate(Guid userID)
+        {
+            var token = await _accountService.LoginAndRetrieveTokenForImpersonate(userID);
+            return Ok(token);
         }
     }
 }

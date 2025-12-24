@@ -1,15 +1,16 @@
 ﻿using ContaVida.MVC.Backend.Infraestructure;
 using ContaVida.MVC.DataAccess.DataAccess;
+using ContaVida.MVC.EmailSender;
 using ContaVida.MVC.Models.Account;
-using Microsoft.EntityFrameworkCore;
+using ContaVida.MVC.Models.Email;
+using ContaVida.MVC.Models.Exceptions;
+using ContaVida.MVC.Security.Infraestructure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
-using ContaVida.MVC.Security.Infraestructure;
-using ContaVida.MVC.Models.Email;
-using ContaVida.MVC.EmailSender;
 
 namespace ContaVida.MVC.Backend.Services
 {
@@ -316,6 +317,44 @@ namespace ContaVida.MVC.Backend.Services
             await _dbContext.SaveChangesAsync();
 
         }
+
+        public async Task ChangePassword(string currentPassword, string newPassword)
+        {
+            var currentUserID = Guid.Parse(_accessor.HttpContext.Session.GetString("userID"));
+            var user = await _dbContext.Users.FirstOrDefaultAsync(f => f.Id == currentUserID);
+
+            var isValidOldPassword = await _decryptCore.ValidatePassword(user.PasswordHash, user.Salt, currentPassword);
+
+            if (!isValidOldPassword)
+                throw new IncorrectPasswordException("Incorrect password");
+
+            await UpdateUserPasswordByID(newPassword, user.Id);
+
+        }
+
+        public async Task<LoginTokenDataModel> LoginAndRetrieveTokenForImpersonate(Guid userID)
+        {
+            var currentUserID = Guid.Parse(_accessor.HttpContext.Session.GetString("userID"));
+            var user = await _dbContext.Users.FirstOrDefaultAsync(f => f.Id == currentUserID);
+
+            if (!user.IsSystemAdmin)
+            {
+                throw new Exception("User has not priviledges");
+            }
+
+            var userToImpersonate = await _dbContext.Users.Include(i => i.PersonalProfiles).FirstOrDefaultAsync(f => f.Id == userID);
+            var personalProfile = userToImpersonate.PersonalProfiles.FirstOrDefault();
+            var result = new LoginTokenDataModel()
+            {
+                IsSysAdmin = false,
+                UserName = userToImpersonate.UserName,
+                LastName = personalProfile.LastName1,
+                Name = personalProfile.LastName1,
+                Token = GenerateToken(userToImpersonate, personalProfile)
+            };
+            return result;
+        }
+
 
         #region helper methods
         private string GenerateToken(User newUser, PersonalProfile newProfileUser)

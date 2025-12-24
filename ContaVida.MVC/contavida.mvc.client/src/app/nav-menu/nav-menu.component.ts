@@ -10,6 +10,7 @@ import { LocalStorageService } from '../services/Storage/local-storage.service';
 export class NavMenuComponent {
   isExpanded = false;
 
+  selectedIndex: number | null = null;
   @ViewChild('mySidenav') myDiv!: ElementRef;
   constructor(private router: Router, public localStorageService: LocalStorageService){
 
@@ -51,6 +52,11 @@ export class NavMenuComponent {
     this.toggle();
     this.router.navigate(['/login'])
   }
+
+  
+select(index: number) {
+  this.selectedIndex = index;
+}
 
 //   openNav() {
 //     this.myDiv.nativeElement.getElementById("mySidenav").style.display = "block";

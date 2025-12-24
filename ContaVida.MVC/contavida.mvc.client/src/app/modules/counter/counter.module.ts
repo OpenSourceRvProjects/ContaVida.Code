@@ -13,10 +13,11 @@ import { ModalEditComponent } from '../edit-counter/modalEditCounter';
 import { CounterRoutingModule } from './counter-routing.module';
 import { MyCounterComponent } from './my-counter/my-counter.component';
 import { SharedModule } from '../shared/shared.module.';
+import { AddCounterComponent } from './add/add-counter.component';
 
 @NgModule({
   declarations: [
-    // AddCounterComponent,
+    AddCounterComponent,
     CounterListComponent,
     MyCounterComponent,
     ModalEditComponent,

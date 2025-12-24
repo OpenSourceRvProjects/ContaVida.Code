@@ -1,0 +1,207 @@
+<!-----------------------------------------
+  ADD EVENT - INTERNAL FORM (CONTAVIDA)
+------------------------------------------>
+
+<style>
+  /* ===== CARD ===== */
+  .event-card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 32px;
+    animation: fadeUp 0.25s ease;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ===== TITLE ===== */
+  .event-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+    color: #212529;
+  }
+
+  /* ===== INPUTS ===== */
+  .form-label {
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .form-control {
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .form-control:focus {
+    border-color: #198754;
+    box-shadow: none;
+  }
+
+  /* ===== BUTTON ===== */
+  .btn-action {
+    background: linear-gradient(135deg, #198754, #42ba96);
+    border: none;
+    height: 46px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .btn-action:hover {
+    opacity: 0.95;
+  }
+
+  /* ===== ERROR ===== */
+  .error-text {
+    color: #dc3545;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  /* ===== LOADING ===== */
+  .loading-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    max-width: 420px;
+  }
+
+  .spinner-border {
+    width: 5rem;
+    height: 5rem;
+  }
+</style>
+
+<!-- ===== PROCESSING ===== -->
+<div *ngIf="processing"
+     class="vh-100 d-flex justify-content-center align-items-center">
+
+  <div class="loading-card">
+    <div class="mb-4">
+      <div class="spinner-border text-success"></div>
+    </div>
+    <h2>Agregando tu evento</h2>
+    <p class="text-muted">Esto tomará un momento</p>
+  </div>
+
+</div>
+
+<!-- ===== FORM (CENTERED) ===== -->
+<div *ngIf="!processing"
+     class="vh-100 d-flex justify-content-center align-items-center">
+
+  <div class="container">
+
+    <div class="row justify-content-center w-100">
+      <div class="col-xl-10 col-lg-11 col-md-12">
+
+        <div class="event-card">
+
+          <form-logo></form-logo>
+
+          <div class="event-title">Agregar evento</div>
+
+          <form>
+
+            <!-- EVENT NAME / YEAR -->
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Nombre evento</label>
+                <input type="text"
+                       [(ngModel)]="newCounterEvent.eventName"
+                       name="eventName"
+                       class="form-control"
+                       required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Año evento</label>
+                <input type="number"
+                       [(ngModel)]="newCounterEvent.year"
+                       name="year"
+                       class="form-control"
+                       required>
+              </div>
+            </div>
+
+            <!-- MONTH / DAY -->
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Mes evento</label>
+                <select class="form-control"
+                        [(ngModel)]="selectedMonth"
+                        name="month">
+                  <option *ngFor="let m of monthsList" [ngValue]="m">
+                    {{ m.text }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Día evento</label>
+                <input type="number"
+                       min="1"
+                       max="31"
+                       [(ngModel)]="newCounterEvent.day"
+                       name="day"
+                       class="form-control"
+                       required>
+              </div>
+            </div>
+
+            <!-- HOUR / MINUTES -->
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Hora</label>
+                <select class="form-control"
+                        [(ngModel)]="selectedHour"
+                        name="hour">
+                  <option *ngFor="let h of hourList" [ngValue]="h">
+                    {{ h.text }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Minutos</label>
+                <input type="number"
+                       [(ngModel)]="newCounterEvent.minutes"
+                       name="minutes"
+                       class="form-control"
+                       required>
+              </div>
+            </div>
+
+            <!-- ERROR -->
+            <div *ngIf="errorMessage" class="error-text">
+              {{ errorMessage }}
+            </div>
+
+            <!-- SUBMIT -->
+            <button class="btn btn-action w-100"
+                    (click)="addEvent()">
+              Agregar evento
+            </button>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

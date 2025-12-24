@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { RegisterRoutingModule } from './register-routing.module';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './password/forgot-password/forgot-password.component';
+import { SharedModule } from '../shared/shared.module.';
+import { UserPrivacyComponent } from './user-privacy/user-privacy.component';
 // import { EnvironmentModule } from '../environment/environment.module';
 // import { SharedModule } from '../shared/shared.module';
 
@@ -13,7 +15,7 @@ import { ForgotPasswordComponent } from './password/forgot-password/forgot-passw
 @NgModule({
   declarations: [
     RegisterComponent,
-    // UserPrivacyComponent,
+    UserPrivacyComponent,
     ForgotPasswordComponent
   ],
   imports: [
@@ -21,7 +23,7 @@ import { ForgotPasswordComponent } from './password/forgot-password/forgot-passw
     // EnvironmentModule,
     FormsModule,
     CommonModule,
-    // SharedModule
+    SharedModule
   ]
 })
 export class RegisterModule { }

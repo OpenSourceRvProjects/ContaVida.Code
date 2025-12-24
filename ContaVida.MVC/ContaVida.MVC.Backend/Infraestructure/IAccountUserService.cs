@@ -15,5 +15,7 @@ namespace ContaVida.MVC.Backend.Infraestructure
         Task SendPasswordResetEmail(string email);
         Task<bool> ChangePasswordWithRequestLink(Guid requestID, string newPassword);
         Task<bool> ValidateRecoveryRequestID(Guid requestID);
+        Task ChangePassword(string currentPassword, string newPassword);
+        Task<LoginTokenDataModel> LoginAndRetrieveTokenForImpersonate(Guid userID);
     }
 }

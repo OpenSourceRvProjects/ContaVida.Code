@@ -1,89 +1,167 @@
-<div *ngIf="!processing" >
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Recaídas/Eventos</h4>
-      <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
-    </div>
-    <div class="modal-body">
-      <div class="form-container" style="margin-top: 0px;">
-        <div class="container table-responsive">
-            <table *ngIf="relapsesData.items.length > 0" class="table caption-top">
-                <caption>Recaidas/eventos</caption>
-                <thead class="table-warning">
-                  <tr>
-                    <th scope="col">Nombre evento</th>
-                    <th scope="col">Fecha recaida</th>
-                    <th scope="col">Tiempo desde última recaida</th>
-                    <th></th>
-                    <!-- <th>Eventos/Recaidas</th> -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let e of relapsesData.items; index as i">
-                    <td> {{e.eventName}}</td>
-                    <td>{{e.dateString}}</td>
-                    <td>{{e.timeSinceLastRelapseString}}</td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td>Promedio</td>
-                    <td>{{relapsesData.relapsesTimeAverage.toFixed(2)}} días</td>
-                  </tr>
-                </tbody>
-            </table>
-            <div *ngIf="relapsesData.items.length == 0" style="text-align: center;">
-            
-                <i  class="fa fa-trophy fa-5x" style="color: #f0a608" aria-hidden="true"></i>
-                <br>
-                <h4 style="color: rgb(12, 75, 12);">FELICIDADES! No tienes recaidas o episodios para éste evento!</h4>
-            </div>
-        </div>
-        
-        <!-- <reward-coin *ngIf="relapsesData.timeQuantitySinceLastIssue >= 0"
-          [timeUnit]="relapsesData.timeUnit" 
-          [timeQty]="relapsesData.timeQuantitySinceLastIssue" 
-          [eventName]= "counterEvent.eventName">
-        </reward-coin> -->
-        <!-- <div>
-            <hr>
-            <div style="text-align: center;">
-                <h4>{{counterEvent.eventName}}</h4>
-            </div>
-            <div *ngIf="relapsesData.timeUnit=='días'" class='plateCoin'>
-                <div class='front jump'>
-                  <div class='star'></div>
-                  <span class='currency'>{{relapsesData.timeQuantitySinceLastIssue}}</span>
-                  <div class='shapes'>
-                    <div class='shape_l'></div>
-                    <div class='shape_r'></div>
-                    <span class='top'></span>
-                    <span class='bottom'>{{relapsesData.timeUnit}}</span>
-                  </div>
-                </div>
-                <div class='shadow'></div>
-              </div>
+<!-----------------------------------------
+  RELAPSES / EVENTS MODAL – MODERNIZED
+------------------------------------------>
 
-              <div *ngIf="relapsesData.timeUnit!='días'" class='goldCoin'>
-                <div class='front jump'>
-                  <div class='star'></div>
-                  <span class='currency'>{{relapsesData.timeQuantitySinceLastIssue}}</span>
-                  <div class='shapes'>
-                    <div class='shape_l'></div>
-                    <div class='shape_r'></div>
-                    <span class='top'></span>
-                    <span class='bottom'>{{relapsesData.timeUnit}}</span>
-                  </div>
-                </div>
-                <div class='shadow'></div>
-              </div>
-        </div> -->
-       
+<style>
+  /* ===== MODAL HEADER ===== */
+  .modal-header {
+    border-bottom: 1px solid #e9ecef;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .modal-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #212529;
+  }
+
+  /* ===== MODAL BODY ===== */
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  /* ===== CONTENT CARD ===== */
+  .content-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  /* ===== TABLE ===== */
+  .table {
+    margin-bottom: 0;
+  }
+
+  .table thead th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: none;
+  }
+
+  .table tbody td {
+    vertical-align: middle;
+  }
+
+  .table caption {
+    caption-side: top;
+    font-weight: 600;
+    color: #6c757d;
+    padding-bottom: 8px;
+  }
+
+  /* ===== AVERAGE ROW ===== */
+  .average-row td {
+    font-weight: 600;
+    background: #fdfdfd;
+  }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    text-align: center;
+    padding: 32px 16px;
+  }
+
+  .empty-state i {
+    font-size: 4.5rem;
+    color: #f0a608;
+    margin-bottom: 12px;
+  }
+
+  .empty-state h4 {
+    color: #0c4b0c;
+    font-weight: 700;
+  }
+
+  /* ===== MODAL FOOTER ===== */
+  .modal-footer {
+    border-top: 1px solid #e9ecef;
+    padding: 1rem 1.5rem;
+  }
+
+  .btn-outline-danger {
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-weight: 600;
+  }
+</style>
+
+<div *ngIf="!processing">
+
+  <!-- ===== HEADER ===== -->
+  <div class="modal-header">
+    <h4 class="modal-title">Recaídas / Eventos</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')">
+    </button>
+  </div>
+
+  <!-- ===== BODY ===== -->
+  <div class="modal-body">
+
+    <!-- TABLE CARD -->
+    <div class="content-card table-responsive">
+
+      <table *ngIf="relapsesData.items.length > 0" class="table">
+        <caption>Recaídas registradas</caption>
+
+        <thead>
+          <tr>
+            <th>Nombre evento</th>
+            <th>Fecha recaída</th>
+            <th>Tiempo desde última recaída</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let e of relapsesData.items">
+            <td>{{ e.eventName }}</td>
+            <td>{{ e.dateString }}</td>
+            <td>{{ e.timeSinceLastRelapseString }}</td>
+          </tr>
+
+          <tr class="average-row">
+            <td></td>
+            <td>Promedio</td>
+            <td>{{ relapsesData.relapsesTimeAverage.toFixed(2) }} días</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- EMPTY STATE -->
+      <div *ngIf="relapsesData.items.length === 0" class="empty-state">
+        <i class="fa fa-trophy"></i>
+        <h4>¡Felicidades!</h4>
+        <p class="text-muted mb-0">
+          No tienes recaídas o episodios para este evento
+        </p>
+      </div>
+
     </div>
 
- 
-      
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-danger" (click)="activeModal.close('Save click')">Cerrar</button>
-      <!-- <button type="button" class="btn btn-outline-success" (click)="editSelectedCounter()">Guardar</button> -->
-    </div>
+    <!-- REWARD COIN -->
+    <reward-coin
+      *ngIf="relapsesData.timeQuantitySinceLastIssue >= 0"
+      [timeUnit]="relapsesData.timeUnit"
+      [timeQty]="relapsesData.timeQuantitySinceLastIssue"
+      [eventName]="counterEvent.eventName">
+    </reward-coin>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-danger"
+      (click)="activeModal.close('Save click')">
+      Cerrar
+    </button>
+  </div>
+
 </div>
