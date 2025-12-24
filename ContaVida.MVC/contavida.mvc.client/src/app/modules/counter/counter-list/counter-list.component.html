@@ -68,6 +68,10 @@
                  (click)="openEditPopUp(e)"></i>
             </td>
 
+            <td>
+              <app-copy-link *ngIf="e.isPublic" [counterID]="e.id"></app-copy-link>
+            </td>
+
             <td class="text-center">
               <i class="fa fa-bar-chart text-secondary action-icon"
                  (click)="openRelapsesPopUp(e)"

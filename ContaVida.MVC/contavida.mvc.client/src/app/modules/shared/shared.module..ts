@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-//import { CopyLinkComponent } from './copy-link/copy-link.component';
-//import { RewardCoinComponent } from './reward-coin/reward-coin.component';
 import { FormLogoComponent } from './form-logo/form-logo.component';
 import { RewardCoinComponent } from './reward-coin/reward-coin.component';
+import { CopyLinkComponent } from './copy-link/copy-link.component';
 
 
 
 @NgModule({
   declarations: [
-    //CopyLinkComponent,
+    CopyLinkComponent,
     RewardCoinComponent,
     FormLogoComponent,
   ],
@@ -18,6 +17,6 @@ import { RewardCoinComponent } from './reward-coin/reward-coin.component';
     FormsModule,
     CommonModule,
   ],
-  exports: [RewardCoinComponent,  FormLogoComponent]
+  exports: [CopyLinkComponent, RewardCoinComponent,  FormLogoComponent]
 })
 export class SharedModule { }
