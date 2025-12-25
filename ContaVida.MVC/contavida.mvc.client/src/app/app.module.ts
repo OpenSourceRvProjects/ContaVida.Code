@@ -13,6 +13,7 @@ import { NgModule } from '@angular/core';
 import { AuthInterceptorService } from './services/AuthInterceptorService';
 import { SharedModule } from './modules/shared/shared.module.';
 import { ProfileModule } from './modules/profile/profile.module';
+import { DevToolsModule } from './modules/dev-tools/dev-tools.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProfileModule } from './modules/profile/profile.module';
     SharedModule,
     ProfileModule,
     RegisterModule,
+    DevToolsModule
 
   ],
   providers: [

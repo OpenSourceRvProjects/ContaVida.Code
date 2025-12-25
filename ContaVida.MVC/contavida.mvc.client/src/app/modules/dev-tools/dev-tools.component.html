@@ -1,0 +1,165 @@
+<style>
+  .settings-wrapper {
+    max-width: 720px;
+    margin: 3rem auto;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .settings-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .settings-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 16px 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .settings-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .settings-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .settings-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+  }
+
+  /* solid colors ONLY (same idea as your original view) */
+  .icon-monitor {
+    background: #3810db;
+  }
+
+  .icon-docs {
+    background: #198754;
+  }
+
+  .icon-code {
+    background: #212529;
+  }
+
+  .settings-text {
+    font-weight: 600;
+    color: #212529;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="settings-wrapper container">
+
+  <div class="settings-card">
+
+    <div class="settings-title">
+      <i class="fa fa-server"></i>
+      Sección técnica
+    </div>
+
+    <div class="settings-list">
+
+      <!-- Monitoreo del sistema -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-monitor">
+            <i class="fa fa-server"></i>
+          </div>
+          <div class="settings-text">
+            Monitoreo del sistema
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="router.navigate(['/system/monitoring'])">
+          Ver
+        </button>
+      </div>
+
+      <!-- Documentación (Swagger) -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-docs">
+            <i class="fa fa-book"></i>
+          </div>
+          <div class="settings-text">
+            Documentación para desarrolladores
+          </div>
+        </div>
+
+        <a
+          href="/swagger"
+          target="_blank"
+          class="btn btn-outline-success">
+          Abrir
+        </a>
+      </div>
+
+      <!-- Código fuente -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-code">
+            <i class="fa fa-code"></i>
+          </div>
+          <div class="settings-text">
+            Código fuente
+          </div>
+        </div>
+
+        <a
+          href="https://github.com/tu-repo"
+          target="_blank"
+          class="btn btn-outline-dark">
+          Ver
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
