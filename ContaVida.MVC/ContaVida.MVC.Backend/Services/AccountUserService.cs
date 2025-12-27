@@ -7,6 +7,7 @@ using ContaVida.MVC.Models.Exceptions;
 using ContaVida.MVC.Security.Infraestructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,9 +23,11 @@ namespace ContaVida.MVC.Backend.Services
         private IDecryptCore _decryptCore;
         private ITokenCore _tokenCore;
         private IEmailSender _emailService;
+        private IConfiguration _configuration;
 
         public AccountUserService(ContaVidaDbContext dbContext, IHttpContextAccessor accessor, 
-            IEncryptCore encryptCore, IDecryptCore decryptCore, ITokenCore tokenCore, IEmailSender emailService )
+            IEncryptCore encryptCore, IDecryptCore decryptCore, ITokenCore tokenCore, 
+            IEmailSender emailService, IConfiguration configuration )
         {
             _dbContext = dbContext;
             _encryptCore = encryptCore;
@@ -32,6 +35,7 @@ namespace ContaVida.MVC.Backend.Services
             _decryptCore = decryptCore;
             _tokenCore = tokenCore;
             _emailService = emailService;
+            _configuration = configuration;
         }
 
         public async Task<StatusPageResponseModel> GetSystemStatus()
@@ -353,6 +357,66 @@ namespace ContaVida.MVC.Backend.Services
                 Token = GenerateToken(userToImpersonate, personalProfile)
             };
             return result;
+        }
+
+        public bool GetMaintenancePageFlag()
+        {
+            var boolMaintenanceFlag = bool.Parse(_configuration["promtMaintenancePage"]);
+            return boolMaintenanceFlag;
+        }
+
+        public async Task<bool> GetMaintenancePageFromDB()
+        {
+            try
+            {
+                var flag = await _dbContext.SystemMaintenances.FirstOrDefaultAsync();
+                return flag.IsOnMaintenance;
+            }
+            catch (Exception ex)
+            {
+                return true;
+            }
+        }
+
+        private async Task ModifyServerMaintenanceFile(bool showMaintacePage)
+        {
+            if (File.Exists("maitenancePageValue.txt"))
+                File.Delete("maitenancePageValue.txt");
+
+            await File.AppendAllTextAsync("maitenancePageValue.txt", showMaintacePage.ToString());
+
+        }
+
+        public async Task SetMaintenacePage(bool showMaintacePage)
+        {
+            var currentUserID = Guid.Parse(_accessor.HttpContext.Session.GetString("userID"));
+            var user = await _dbContext.Users.FirstOrDefaultAsync(f => f.Id == currentUserID);
+
+            if (!user.IsSystemAdmin)
+            {
+                throw new Exception("Only sysadmin can perform this action");
+            }
+
+            await ModifyServerMaintenanceFile(showMaintacePage);
+
+        }
+        public async Task SetMaintenancePageWithKey(MaintenanceKeyInputModel input)
+        {
+            var base64InputKey = Base64Encode(input.ServerKey);
+            var currentServerKey = _configuration["maintenanceActivationKey"];
+
+            if (base64InputKey == currentServerKey)
+            {
+                await ModifyServerMaintenanceFile(input.ShowMaintacePage);
+            }
+            else
+                throw new Exception("Not valid server key was provided");
+        }
+
+        private static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
 
 

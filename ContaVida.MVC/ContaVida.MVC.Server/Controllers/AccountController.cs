@@ -165,5 +165,32 @@ namespace ContaVida.MVC.Server.Controllers
             var token = await _accountService.LoginAndRetrieveTokenForImpersonate(userID);
             return Ok(token);
         }
+
+
+        [HttpGet]
+        [Route("maintenancePage")]
+        [AllowAnonymous]
+        public async Task<IActionResult> MaintenancePage()
+        {
+            var flag = _accountService.GetMaintenancePageFlag();
+            var textFlag = false;
+            var dbFlag = false;
+            try
+            {
+                var newTextFlag = System.IO.File.ReadAllLines("maitenancePageValue.txt");
+                textFlag = bool.Parse(newTextFlag[0]);
+                dbFlag = await _accountService.GetMaintenancePageFromDB();
+
+            }
+            catch (Exception ex)
+            {
+                textFlag = false;
+            }
+
+            return Ok(new
+            {
+                showMaintenancePage = flag || textFlag || dbFlag
+            });
+        }
     }
 }

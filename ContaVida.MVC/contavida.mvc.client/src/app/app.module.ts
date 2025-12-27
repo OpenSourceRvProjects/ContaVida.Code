@@ -14,6 +14,7 @@ import { AuthInterceptorService } from './services/AuthInterceptorService';
 import { SharedModule } from './modules/shared/shared.module.';
 import { ProfileModule } from './modules/profile/profile.module';
 import { DevToolsModule } from './modules/dev-tools/dev-tools.module';
+import { MaintenanceModule } from './modules/maintenance/maintenance.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DevToolsModule } from './modules/dev-tools/dev-tools.module';
     SharedModule,
     ProfileModule,
     RegisterModule,
-    DevToolsModule
+    DevToolsModule,
+    MaintenanceModule
 
   ],
   providers: [

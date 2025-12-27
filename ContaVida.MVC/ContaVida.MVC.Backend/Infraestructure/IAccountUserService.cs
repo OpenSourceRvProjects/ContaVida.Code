@@ -17,5 +17,9 @@ namespace ContaVida.MVC.Backend.Infraestructure
         Task<bool> ValidateRecoveryRequestID(Guid requestID);
         Task ChangePassword(string currentPassword, string newPassword);
         Task<LoginTokenDataModel> LoginAndRetrieveTokenForImpersonate(Guid userID);
+        public bool GetMaintenancePageFlag();
+        public Task SetMaintenacePage(bool showMaintacePage);
+        public Task SetMaintenancePageWithKey(MaintenanceKeyInputModel input);
+        Task<bool> GetMaintenancePageFromDB();
     }
 }
