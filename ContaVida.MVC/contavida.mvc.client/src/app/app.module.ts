@@ -15,6 +15,7 @@ import { SharedModule } from './modules/shared/shared.module.';
 import { ProfileModule } from './modules/profile/profile.module';
 import { DevToolsModule } from './modules/dev-tools/dev-tools.module';
 import { MaintenanceModule } from './modules/maintenance/maintenance.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MaintenanceModule } from './modules/maintenance/maintenance.module';
     ProfileModule,
     RegisterModule,
     DevToolsModule,
-    MaintenanceModule
+    MaintenanceModule,
+    AdminModule
 
   ],
   providers: [

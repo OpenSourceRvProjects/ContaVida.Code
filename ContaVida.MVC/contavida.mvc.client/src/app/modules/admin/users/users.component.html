@@ -1,0 +1,50 @@
+<div class="container table-responsive">
+    <table class="table caption-top">
+        <caption>Actividad de usuarios</caption>
+        <thead class="table-success">
+          <tr>
+            <th scope="col">Nickname</th>
+            <th scope="col"># Contadores</th>
+            <th scope="col"># Recaidas</th>
+            <th scope="col"># Recaidas</th>
+            <th style="text-align:center" scope="col">Restablecer contraseña</th>
+            <th></th>
+            <th></th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users; index as i">
+            <td>{{u.nickName}}</td>
+            <td>{{u.counterEventsCount}}</td>
+            <td>{{u.relapsesCount}}</td>
+            <td>{{u.email}}</td>
+            <td  style="text-align:center"><button (click)="openConfirmModal(u)" class="btn button-primary"><i class="fa fa-envelope" style="color:green"></i></button></td>
+            <td><button class="btn btn-outline-success" (click)="impersonate(u.userID)">Impersonar</button></td>
+            <td></td>
+
+          </tr>
+        </tbody>
+      </table>
+      
+</div>
+
+<ng-template #confirmModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirmación</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
+  </div>
+  <div class="modal-body">
+    <p *ngIf="!processing && !feedbackMessage" >¿Estás seguro que deseas enviar el correo de restablecimiento de contraseña a <strong>{{ selectedUser?.email }}</strong>?</p>
+    <div *ngIf="!processing && feedbackMessage" [innerHTML]="feedbackMessage"></div>
+    <div *ngIf="processing" class="col-12 text-center mt-4">
+      <div style="width: 6rem; height: 6rem;" class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel')">Cerrar</button>
+    <button *ngIf="!processing && !feedbackMessage"  type="button" class="btn btn-primary" (click)="confirmResetPassword(modal)">Enviar</button>
+  </div>
+</ng-template>
