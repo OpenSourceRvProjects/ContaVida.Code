@@ -1,0 +1,106 @@
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .backgroundGrad {
+    min-height: 100vh;
+    background: linear-gradient(
+      90deg,
+      rgba(2,0,36,1) 0%,
+      rgba(82,9,121,1) 47%,
+      rgb(6, 72, 85) 100%
+    );
+    background-size: 300% 300%;
+    background-attachment: fixed;
+    animation: gradientMovement 15s ease-in-out infinite;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  @keyframes gradientMovement {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .image-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  h4 {
+    text-align: center;
+    color: white;
+  }
+
+  hr {
+    border-color: white;
+  }
+</style>
+
+<div class="backgroundGrad">
+  <div class="container">
+
+    <!-- <app-environment-banner></app-environment-banner> -->
+
+    <div class="image-container my-4">
+      <img id="doggie"
+           [src]="dogURL"
+           width="280"
+           height="300"
+           style="border-radius: 50%;" />
+    </div>
+
+    <div>
+      <br />
+      <p style="text-align: center; font-size: 1.3rem; color: white">
+        <strong>"{{ phrase }}"</strong>
+      </p>
+      <p style="text-align: center; font-style: italic; margin-right: 20px; color: white">
+        — {{ author }}
+      </p>
+    </div>
+
+    <h4>{{ eventName }} {{ isCountDown ? ': faltan ' : ' desde hace' }}</h4>
+    <h4 id="noAlcoholDays">{{ viewDay }} días</h4>
+    <h4 id="noAlcoholHours">{{ viewHour }} horas</h4>
+    <h4 id="noAlcoholMinutes">{{ viewMinutes }} minutos</h4>
+    <h4 id="noAlcoholSeconds">{{ viewSeconds }} segundos</h4>
+
+    <h4 *ngIf="isPublicCounter">
+      <app-copy-link [counterID]="id" [isFromCounterView]="true"></app-copy-link>
+    </h4>
+
+    <hr />
+
+    <h4>
+      <i (click)="reload()" class="fa fa-refresh"></i>
+    </h4>
+
+    <div *ngIf="!isShared" class="d-flex justify-content-center align-items-center mb-3">
+      <div class="form-check form-switch">
+        <input class="form-check-input"
+               type="checkbox"
+               name="refresh"
+               (click)="changeRefreshOption($event)"
+               [(ngModel)]="isRefreshActive"
+               id="flexSwitchRefresh" />
+        <label style="color:white" class="form-check-label" for="flexSwitchRefresh">
+          Refrescar automáticamente
+        </label>
+      </div>
+    </div>
+
+    <h4 id="completedYears"></h4>
+
+    <div class="text-center mt-4">
+      <button (click)="goToListPage()" class="btn btn-success">
+        Ir a otros contadores
+      </button>
+    </div>
+
+  </div>
+</div>

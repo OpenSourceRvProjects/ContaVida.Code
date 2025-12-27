@@ -1,7 +1,9 @@
 ﻿using ContaVida.MVC.Backend.Infraestructure;
 using ContaVida.MVC.Backend.Services;
+using ContaVida.MVC.EmailSender;
 using ContaVida.MVC.Security.Core;
 using ContaVida.MVC.Security.Infraestructure;
+using NETCore.MailKit.Core;
 
 namespace ContaVida.MVC.Server
 {
@@ -12,6 +14,8 @@ namespace ContaVida.MVC.Server
         {
             services.AddTransient<IAccountUserService, AccountUserService>();
             services.AddTransient<IEventCounterService, EventCounterService>();
+            services.AddTransient<IRelapseService, RelapseService>();
+            services.AddTransient<IProfileService, ProfileService>();
             services.AddTransient<IEncryptCore, EncryptCore>();
             services.AddTransient<IDecryptCore, DecryptCore>();
             services.AddTransient<ITokenCore, TokenCore>();

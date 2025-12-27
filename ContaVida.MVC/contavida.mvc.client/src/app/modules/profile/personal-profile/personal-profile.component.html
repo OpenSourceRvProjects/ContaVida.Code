@@ -1,0 +1,141 @@
+<style>
+  .settings-wrapper {
+    max-width: 720px;
+    margin: 3rem auto;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .settings-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .settings-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 16px 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .settings-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .settings-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .settings-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+  }
+
+  .icon-images {
+    background: linear-gradient(135deg, #0d6efd, #3d8bfd);
+  }
+
+  .icon-password {
+    background: linear-gradient(135deg, #198754, #42ba96);
+  }
+
+  .settings-text {
+    font-weight: 600;
+    color: #212529;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="settings-wrapper container">
+
+  <div class="settings-card">
+
+    <div class="settings-title">
+      <i class="fa fa-cog"></i>
+      Ajustes
+    </div>
+
+    <div class="settings-list">
+
+      <!-- Images -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-images">
+            <i class="fa fa-file"></i>
+          </div>
+          <div class="settings-text">
+            Administrar imágenes
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="router.navigate(['/profile/imageCollection'])"
+          class="btn btn-outline-primary">
+          Ingresar
+        </button>
+      </div>
+
+      <!-- Password -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-password">
+            <i class="fa fa-key"></i>
+          </div>
+          <div class="settings-text">
+            Cambiar contraseña
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="openChangePassword()"
+          class="btn btn-outline-success">
+          Cambiar
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

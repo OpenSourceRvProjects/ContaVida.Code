@@ -6,7 +6,7 @@ import { RelapsesDataModel } from '../../../Models/Relapses/IRelapseDetailModel'
 @Component({
   selector: 'relapses-modal',
   templateUrl: './modalDeleteCounter.html',
-//   styleUrls: ['./modalDeleteCounter.css'],
+  styleUrls: ['./modalDeleteCounter.css'],
   standalone: false,
 })
 export class ModalDeleteCounterComponent implements OnInit {

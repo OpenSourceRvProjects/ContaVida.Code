@@ -1,5 +1,7 @@
 ﻿using ContaVida.MVC.Backend.Infraestructure;
 using ContaVida.MVC.Models.Account;
+using ContaVida.MVC.Server.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -71,6 +73,124 @@ namespace ContaVida.MVC.Server.Controllers
         {
             var clientId = _configuration["security:googleClientID"];
             return Ok(new { googleClientID = clientId });
+        }
+
+        [HttpPost]
+        [Route("registerGoogleAuth")]
+        public async Task<IActionResult> regisgerWithGoogle(GoogleAuthRequest request)
+        {
+            var googleUser = await _accountService.VerifyGoogleToken(request.IdToken);
+            if (googleUser == null)
+                return Unauthorized("Invalid Google token");
+
+            string fullName = googleUser.DisplayName ?? googleUser.Name ?? "";
+            string[] nameParts = fullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            string firstName = nameParts.Length > 0 ? nameParts[0] : "";
+            string lastName1 = nameParts.Length > 1 ? nameParts[1] : "";
+
+            var response = await _accountService.RegisterUserAccount(new RegisterModel()
+            {
+                Email = googleUser.Email,
+                Name = firstName,
+                LastName1 = lastName1,
+                LastName2 = "",
+                UserName = googleUser.Email,
+            });
+
+            return (Ok(response));
+        }
+
+        [HttpPost]
+        [Route("loginGoogleAuth")]
+        public async Task<IActionResult> loginWithGoogle(GoogleAuthRequest request)
+        {
+            var googleUser = await _accountService.VerifyGoogleToken(request.IdToken);
+            if (googleUser == null)
+                return Unauthorized("Invalid Google token");
+
+            var response = await _accountService.ExternalVendorLoginAndRetrieveToken(googleUser.Email);
+            return (Ok(response));
+        }
+
+
+        [HttpGet]
+        [Route("validateRecoveryRequestID")]
+        public async Task<ActionResult> ResetPassword(Guid requestID)
+        {
+            var isValidID = await _accountService.ValidateRecoveryRequestID(requestID);
+            return Ok(isValidID);
+        }
+
+
+        [HttpGet]
+        [Route("resetPassword")]
+        public async Task<ActionResult> ResetPassword(string email)
+        {
+            try
+            {
+                await _accountService.SendPasswordResetEmail(email);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("changePasswordWithURL")]
+        public async Task<ActionResult> ChangePasswordURL(Guid id, string password)
+        {
+            var result = await _accountService.ChangePasswordWithRequestLink(id, password);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("changePassword")]
+        [LoggedUserDataFilter]
+        [ExceptionManager]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
+        {
+            await _accountService.ChangePassword(changePasswordModel.OldPassword, changePasswordModel.NewPassword);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("impersonate")]
+        [LoggedUserDataFilter]
+        public async Task<IActionResult> Impersonate(Guid userID)
+        {
+            var token = await _accountService.LoginAndRetrieveTokenForImpersonate(userID);
+            return Ok(token);
+        }
+
+
+        [HttpGet]
+        [Route("maintenancePage")]
+        [AllowAnonymous]
+        public async Task<IActionResult> MaintenancePage()
+        {
+            var flag = _accountService.GetMaintenancePageFlag();
+            var textFlag = false;
+            var dbFlag = false;
+            try
+            {
+                var newTextFlag = System.IO.File.ReadAllLines("maitenancePageValue.txt");
+                textFlag = bool.Parse(newTextFlag[0]);
+                dbFlag = await _accountService.GetMaintenancePageFromDB();
+
+            }
+            catch (Exception ex)
+            {
+                textFlag = false;
+            }
+
+            return Ok(new
+            {
+                showMaintenancePage = flag || textFlag || dbFlag
+            });
         }
     }
 }

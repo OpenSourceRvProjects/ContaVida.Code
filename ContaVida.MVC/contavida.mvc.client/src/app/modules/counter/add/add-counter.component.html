@@ -1,0 +1,153 @@
+<style>
+  /* ====== MODERN CARD ====== */
+  .modern-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+    border-radius: 1.25rem;
+    padding: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
+  }
+
+  /* ====== LOADER ====== */
+  .modern-loader-card {
+    background: #ffffff;
+    padding: 3rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .1);
+    max-width: 420px;
+    width: 100%;
+  }
+
+  /* ====== FORM ====== */
+  .form-floating > label {
+    color: #6c757d;
+  }
+
+  .form-control,
+  .form-select {
+    border-radius: 0.75rem;
+  }
+
+  /* ====== BUTTON ====== */
+  .btn-primary {
+    padding: 0.9rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+  }
+</style>
+
+<div class="container py-5">
+
+  <!-- LOADING -->
+  <div *ngIf="processing" class="vh-100 d-flex justify-content-center align-items-center">
+    <div class="modern-loader-card text-center">
+      <div class="spinner-border text-primary mb-4" role="status"></div>
+      <h4>Agregando tu evento</h4>
+      <p class="text-muted">Esto tomará un momento…</p>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div *ngIf="!processing" class="row justify-content-center">
+    <div class="col-lg-8 col-xl-7">
+
+      <div class="modern-card">
+        <form-logo></form-logo>
+
+        <h2 class="text-center mb-4">Agregar evento</h2>
+
+        <form (ngSubmit)="addEvent()">
+
+          <!-- Nombre / Año -->
+          <div class="row g-3">
+            <div class="col-md-6 form-floating">
+              <input type="text"
+                     class="form-control"
+                     id="eventName"
+                     placeholder="Nombre evento"
+                     [(ngModel)]="newCounterEvent.eventName"
+                     name="eventName"
+                     required>
+              <label for="eventName">Nombre del evento</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+              <input type="number"
+                     class="form-control"
+                     id="eventYear"
+                     placeholder="Año"
+                     [(ngModel)]="newCounterEvent.year"
+                     name="eventYear"
+                     required>
+              <label for="eventYear">Año</label>
+            </div>
+          </div>
+
+          <!-- Mes / Día -->
+          <div class="row g-3 mt-2">
+            <div class="col-md-6 form-floating">
+              <select class="form-select"
+                      [(ngModel)]="selectedMonth"
+                      name="month">
+                <option *ngFor="let m of monthsList" [ngValue]="m">
+                  {{ m.text }}
+                </option>
+              </select>
+              <label>Mes</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+              <input type="number"
+                     min="1"
+                     max="31"
+                     class="form-control"
+                     id="day"
+                     placeholder="Día"
+                     [(ngModel)]="newCounterEvent.day"
+                     name="day"
+                     required>
+              <label for="day">Día</label>
+            </div>
+          </div>
+
+          <!-- Hora / Minutos -->
+          <div class="row g-3 mt-2">
+            <div class="col-md-6 form-floating">
+              <select class="form-select"
+                      [(ngModel)]="selectedHour"
+                      name="hour">
+                <option *ngFor="let h of hourList" [ngValue]="h">
+                  {{ h.text }}
+                </option>
+              </select>
+              <label>Hora</label>
+            </div>
+
+            <div class="col-md-6 form-floating">
+              <input type="number"
+                     class="form-control"
+                     id="minutes"
+                     placeholder="Minutos"
+                     [(ngModel)]="newCounterEvent.minutes"
+                     name="minutes"
+                     required>
+              <label for="minutes">Minutos</label>
+            </div>
+          </div>
+
+          <!-- ERROR -->
+          <div *ngIf="errorMessage" class="alert alert-danger text-center mt-4">
+            {{ errorMessage }}
+          </div>
+
+          <!-- SUBMIT -->
+          <button type="submit" class="btn btn-primary w-100 mt-4">
+            Agregar evento
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

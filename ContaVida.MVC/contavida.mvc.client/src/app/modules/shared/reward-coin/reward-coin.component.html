@@ -1,0 +1,33 @@
+<div>
+            <hr>
+            <div style="text-align: center;">
+                <h4>{{eventName}}</h4>
+            </div>
+            <div *ngIf="timeUnit=='días'" class='plateCoin'>
+                <div class='front jump'>
+                  <div class='star'></div>
+                  <span class='currency'>{{timeQty}}</span>
+                  <div class='shapes'>
+                    <div class='shape_l'></div>
+                    <div class='shape_r'></div>
+                    <span class='top'></span>
+                    <span class='bottom'>{{timeUnit}}</span>
+                  </div>
+                </div>
+                <div class='shadow'></div>
+              </div>
+
+              <div *ngIf="timeUnit!='días'" class='goldCoin'>
+                <div class='front jump'>
+                  <div class='star'></div>
+                  <span class='currency'>{{timeQty}}</span>
+                  <div class='shapes'>
+                    <div class='shape_l'></div>
+                    <div class='shape_r'></div>
+                    <span class='top'></span>
+                    <span class='bottom'>{{timeUnit}}</span>
+                  </div>
+                </div>
+                <div class='shadow'></div>
+              </div>
+        </div>

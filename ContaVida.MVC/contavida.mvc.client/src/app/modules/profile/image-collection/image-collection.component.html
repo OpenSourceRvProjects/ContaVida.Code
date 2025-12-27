@@ -1,0 +1,158 @@
+<style>
+  .images-wrapper {
+    max-width: 860px;
+    margin: 3rem auto;
+    animation: fadeUp 0.4s ease;
+  }
+
+  .images-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .images-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .input-card {
+    background: #f8f9fa;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 1.5rem;
+  }
+
+  .input-card input {
+    border-radius: 12px;
+    height: 46px;
+  }
+
+  .actions-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 1.2rem;
+  }
+
+  .hint-text {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+  }
+
+  .images-table img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .delete-icon {
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #dc3545;
+    transition: transform 0.2s ease;
+  }
+
+  .delete-icon:hover {
+    transform: scale(1.2);
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="images-wrapper container">
+
+  <div class="images-card">
+
+    <div class="images-title">
+      <i class="fa fa-image"></i>
+      Gestión de imágenes
+    </div>
+
+    <!-- URL input -->
+    <div class="input-card">
+      <input
+        type="text"
+        [(ngModel)]="currentImageURL"
+        class="form-control"
+        placeholder="URL de la imagen (https://...)"
+        autocomplete="off">
+    </div>
+
+    <!-- Actions -->
+    <div class="actions-row">
+      <button
+        (click)="addImageToList()"
+        class="btn btn-success flex-fill">
+        <i class="fa fa-plus"></i>
+        Agregar imagen
+      </button>
+
+      <button
+        (click)="saveAllImages()"
+        class="btn btn-primary flex-fill">
+        <i class="fa fa-save"></i>
+        Guardar cambios
+      </button>
+    </div>
+
+    <div class="hint-text">
+      Estas imágenes se guardarán <strong>solo al dar clic en “Guardar cambios”</strong>.
+    </div>
+
+    <!-- Images table -->
+    <div *ngIf="imageCollection.images.length > 0"
+         class="table-responsive images-table">
+
+      <table class="table align-middle caption-top">
+        <caption>Imágenes pendientes</caption>
+
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th class="text-center">Vista previa</th>
+            <th class="text-center">Acción</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let e of imageCollection.images; index as i">
+            <td>{{ i + 1 }}</td>
+
+            <td class="text-center">
+              <img [src]="e" alt="Imagen {{i + 1}}">
+            </td>
+
+            <td class="text-center">
+              <i
+                (click)="deleteImage(i)"
+                class="fa fa-trash delete-icon"
+                title="Eliminar imagen">
+              </i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,111 +1,172 @@
-
-
 <header *ngIf="localStorageService.getUserData() && !localStorageService.isCounterActive()">
-  <nav style="background: rgb(2,0,36);
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(28,67,41,1) 0%, rgba(36,89,43,1) 0%, rgba(38,95,43,1) 47%, rgba(72,187,50,1) 100%, rgba(0,212,255,1) 100%);
-  " class="navbar navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3">
-    <div class="container-fluid text-center">
 
-      <div class="row justify-content-center">
-        <div class="col-5">
+  <!-- TOP BAR -->
+  <nav class="navbar contavida-navbar shadow-sm">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
 
-        </div>
-        <div class="col-5">
+      <!-- BRAND -->
+      <span
+        class="navbar-brand text-white fw-semibold"
+        [routerLink]="['/']">
+        ContaVida
+      </span>
 
-        </div>
-      </div>
-      <div class="d-flex justify-content-center">
-        <h4 style="color: white;padding-left: 25px;" [routerLink]="['/']"> Conta Vida</h4>
-
-      </div>
-
-      <button class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-label="Toggle navigation"
-              [attr.aria-expanded]="false"
-              (click)="toggle()">
-        <span class="navbar-toggler-icon" style="color: white;"></span>
+      <!-- ALWAYS VISIBLE HAMBURGER -->
+      <button
+        class="hamburger-btn"
+        type="button"
+        aria-label="Open menu"
+        (click)="toggle()">
+        ☰
       </button>
 
-
-      <!-- https://stackoverflow.com/questions/76048115/how-to-make-navbar-in-bootstrap-always-stays-collapsed-no-matter-the-screen-siz -->
-      <div class="collapse navbar-collapse"
-           [ngClass]="{ show: isExpanded }">
-        <ul class="navbar-nav flex-grow">
-
-
-          <li *ngFor="let link of links" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link" style="color:white" (click)="toggle()" [routerLink]="link.path">{{link.text}}</a>
-          </li>
-          <li>
-            <a class="nav-link" (click)="logout()">Salir</a>
-          </li>
-
-        </ul>
-      </div>
     </div>
   </nav>
-  <!-- <app-environment-banner></app-environment-banner> -->
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar" [class.open]="isExpanded">
+
+    <div class="sidebar-header">
+      <span class="sidebar-title">Menú</span>
+      <button class="close-btn" (click)="toggle()">×</button>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <!-- LINKS -->
+      <a
+        *ngFor="let link of links; let i = index"
+        [routerLink]="link.path"
+        [class.active]="selectedIndex === i"
+        (click)="select(i); toggle()">
+        {{ link.text }}
+      </a>
+
+      <a class="logout" (click)="logout()">
+        Salir
+      </a>
+
+    </nav>
+  </aside>
+
+  <!-- BACKDROP -->
+  <div
+    class="sidebar-backdrop"
+    *ngIf="isExpanded"
+    (click)="toggle()">
+  </div>
+
 </header>
 
+<!-- ================== STYLES ================== -->
 <style>
-
-
-
-
-  body {
-    font-family: "Lato", sans-serif;
+  /* ================== TOP BAR ================== */
+  .contavida-navbar {
+    height: 56px;
+    background: linear-gradient(
+      90deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(38, 95, 43, 1) 45%,
+      rgba(72, 187, 50, 1) 100%
+    );
   }
-  
-  .sidenav {
-    /* display: none; */
-    
-    height: 100%;
-    width: 250px;
+
+  .navbar-brand {
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+
+  .hamburger-btn {
+    font-size: 1.8rem;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  /* ================== SIDEBAR ================== */
+  .sidebar {
     position: fixed;
-    z-index: 1;
     top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 60px;
+    right: -280px;
+    width: 280px;
+    height: 100vh;
+    background: #0f1f14;
+    color: #ffffff;
+    transition: right 0.25s ease-in-out;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
   }
-  
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: white;
-    display: block;
-  }
-  
-  .sidenav a:hover {
-    color: gray;
-  }
-  
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
-  
-  @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
-  </style>
 
-<!-- <div class="container"> 
-  <div *ngIf="isExpanded" id="mySidenav" class="sidenav" style="background: rgb(2,0,36);
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(28,67,41,1) 0%, rgba(36,89,43,1) 0%, rgba(38,95,43,1) 47%, rgba(72,187,50,1) 100%, rgba(0,212,255,1) 100%);
-  ">
-    <a href="javascript:void(0)" class="closebtn" (click)="toggle()">&times;</a>
-    <a *ngFor="let link of links" class="nav-item" [routerLink]="link.path" [routerLinkActive]="['link-active']"  (click)="toggle()">{{link.text}}</a>
-    <a href="#">Salir</a>
-  </div>
-</div>  -->
+  .sidebar.open {
+    right: 0;
+  }
+
+  /* ================== SIDEBAR HEADER ================== */
+  .sidebar-header {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .close-btn {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  /* ================== NAV LINKS ================== */
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+  }
+
+  .sidebar-nav a {
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.4rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .sidebar-nav a:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  /* ACTIVE = USER SELECTED ONLY */
+  .sidebar-nav a.active {
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+  }
+
+  .sidebar-nav .logout {
+    margin-top: 1rem;
+    color: #ff6b6b;
+    font-weight: 600;
+  }
+
+  /* ================== BACKDROP ================== */
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1040;
+  }
+</style>
