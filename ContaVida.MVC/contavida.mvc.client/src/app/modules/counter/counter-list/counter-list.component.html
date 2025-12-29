@@ -45,45 +45,37 @@
 
         <tbody>
           <tr *ngFor="let e of filteredCounterList; index as i">
-
             <td>
               <a href="counter/myCounter?id={{e.id}}"
                  class="text-decoration-none fw-semibold">
                 {{e.eventName}}
               </a>
             </td>
-
             <td class="text-muted">
               {{e.dateString}}
             </td>
-
             <td class="text-center">
               <input (change)="checkboxChange(e)"
                      [(ngModel)]="e.isPublic"
                      type="checkbox"
                      class="form-check-input">
             </td>
-
             <td class="text-center">
               <i class="fa fa-pencil text-primary action-icon"
                  (click)="openEditPopUp(e)"></i>
             </td>
-
             <td>
               <app-copy-link *ngIf="e.isPublic" [counterID]="e.id"></app-copy-link>
             </td>
-
             <td class="text-center">
               <i class="fa fa-bar-chart text-secondary action-icon"
                  (click)="openRelapsesPopUp(e)"
                  title="Recaidas/Eventos"></i>
             </td>
-
             <td class="text-center">
               <i class="fa fa-ban text-danger action-icon"
                  (click)="openDeletePopUp(e)"></i>
             </td>
-
           </tr>
         </tbody>
       </table>

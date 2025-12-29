@@ -73,9 +73,7 @@
     <h4 *ngIf="isPublicCounter">
       <app-copy-link [counterID]="id" [isFromCounterView]="true"></app-copy-link>
     </h4>
-
     <hr />
-
     <h4>
       <i (click)="reload()" class="fa fa-refresh"></i>
     </h4>
@@ -95,7 +93,6 @@
     </div>
 
     <h4 id="completedYears"></h4>
-
     <div class="text-center mt-4">
       <button (click)="goToListPage()" class="btn btn-success">
         Ir a otros contadores

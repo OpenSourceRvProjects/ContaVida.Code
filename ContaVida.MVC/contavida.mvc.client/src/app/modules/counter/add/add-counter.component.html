@@ -1,7 +1,6 @@
 
 
 <div class="container py-5">
-
   <!-- LOADING -->
   <div *ngIf="processing" class="vh-100 d-flex justify-content-center align-items-center">
     <div class="modern-loader-card text-center">
@@ -17,11 +16,8 @@
 
       <div class="modern-card">
         <form-logo></form-logo>
-
         <h2 class="text-center mb-4">Agregar evento</h2>
-
         <form (ngSubmit)="addEvent()">
-
           <!-- Nombre / Año -->
           <div class="row g-3">
             <div class="col-md-6 form-floating">
@@ -108,10 +104,8 @@
           <button type="submit" class="btn btn-primary w-100 mt-4">
             Agregar evento
           </button>
-
         </form>
       </div>
-
     </div>
   </div>
 </div>
