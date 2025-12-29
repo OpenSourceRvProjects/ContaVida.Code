@@ -7,6 +7,7 @@ import { AccountService } from '../../../services/Accounts/account.service';
 @Component({
   selector: 'app-personal-profile',
   templateUrl: './personal-profile.component.html',
+  styleUrls: ['./personal-profile.component.css'],
   standalone: false
 })
 export class PersonalProfileComponent {

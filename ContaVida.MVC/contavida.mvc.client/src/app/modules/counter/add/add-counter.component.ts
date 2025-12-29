@@ -10,8 +10,8 @@ import { EventService } from '../../../services/Events/event.service';
 @Component({
   selector: 'app-add-counter',
   templateUrl: './add-counter.component.html',
+  styleUrls: ['./add-counter.component.css'],
   standalone: false
-//   styleUrls: ['./add-counter.component.css']
 })
 export class AddCounterComponent {
 

@@ -6,6 +6,7 @@ import { ProfileService } from '../../../services/Profile/profile.service';
 @Component({
   selector: 'app-image-collection',
   templateUrl: './image-collection.component.html',
+  styleUrls: ['./image-collection.component.css'],
   standalone: false
 })
 export class ImageCollectionComponent {

@@ -8,6 +8,7 @@ import { IUsersModel } from '../../../Models/Account/IUsersModel';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css'],
   standalone: false
 })
 export class UsersComponent {
