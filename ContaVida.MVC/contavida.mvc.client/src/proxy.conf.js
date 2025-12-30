@@ -34,7 +34,8 @@ const PROXY_CONFIG = [
       "/api/Relapses/getRelapseReasons",
       "/api/EventCounter/deleteCounterByID",
       "/api/Account/changePassword",
-      "/api/Account/maintenancePage"
+      "/api/Account/maintenancePage",
+      "/api/Admin/getSystemStackInformation"
     ],
     target,
     secure: false

@@ -38,10 +38,10 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .settings-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  }
+    .settings-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
 
   .settings-info {
     display: flex;
@@ -60,7 +60,7 @@
     color: white;
   }
 
-  /* solid colors ONLY (same idea as your original view) */
+  /* solid colors ONLY */
   .icon-monitor {
     background: #3810db;
   }
@@ -73,9 +73,18 @@
     background: #212529;
   }
 
+  .icon-info {
+    background: #0d6efd;
+  }
+
   .settings-text {
     font-weight: 600;
     color: #212529;
+  }
+
+  .settings-value {
+    font-weight: 600;
+    color: #495057;
   }
 
   @keyframes fadeUp {
@@ -83,6 +92,7 @@
       opacity: 0;
       transform: translateY(12px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -90,10 +100,13 @@
   }
 </style>
 
+<form-logo></form-logo>
+<h3 style="text-align:center">ContaVida</h3>
 <div class="settings-wrapper container">
 
   <div class="settings-card">
 
+    <!-- SECCIÓN TÉCNICA -->
     <div class="settings-title">
       <i class="fa fa-server"></i>
       Sección técnica
@@ -117,7 +130,7 @@
         </a>
       </div>
 
-      <!-- Documentación (Swagger) -->
+      <!-- Documentación -->
       <div class="settings-item">
         <div class="settings-info">
           <div class="settings-icon icon-docs">
@@ -127,13 +140,13 @@
             Documentación ingenieros de software
           </div>
         </div>
-        <a
-          href="/swagger"
-          target="_blank"
-          class="btn btn-outline-success">
+        <a href="/swagger"
+           target="_blank"
+           class="btn btn-outline-success">
           Abrir
         </a>
       </div>
+
       <!-- Código fuente -->
       <div class="settings-item">
         <div class="settings-info">
@@ -144,14 +157,96 @@
             Código fuente
           </div>
         </div>
-
-        <a
-          href="https://github.com/OpenSourceRvProjects/ContaVida.Code"
-          target="_blank"
-          class="btn btn-outline-dark">
+        <a href="https://github.com/OpenSourceRvProjects/ContaVida.Code"
+           target="_blank"
+           class="btn btn-outline-dark">
           Ver
         </a>
       </div>
     </div>
+
+    <!-- INFORMACIÓN DEL ENTORNO -->
+    <div class="settings-title mt-5">
+      <i class="fa fa-info-circle"></i>
+      Información del sistema
+    </div>
+
+    <div class="settings-item">
+      <div class="settings-info">
+        <div class="settings-icon icon-info">
+          <i class="fa fa-cloud-upload"></i>
+        </div>
+        <div class="settings-text">
+          Última actualización del sistema
+        </div>
+      </div>
+      <div class="settings-value">
+        {{systemData.lastDeployment | date:'dd/MM/yyyy HH:mm' }}
+      </div>
+    </div>
+
+    <div class="settings-list">
+      <!-- Environment -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-info">
+            <i class="fa fa-cloud"></i>
+          </div>
+          <div class="settings-text">
+            Ambiente
+          </div>
+        </div>
+        <div class="settings-value">
+          {{systemData.environment}}
+        </div>
+      </div>
+
+      <!-- Angular -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-info">
+            <i class="fa fa-paint-brush"></i>
+          </div>
+          <div class="settings-text">
+            Angular version
+          </div>
+        </div>
+        <div class="settings-value">
+          v{{angularVersion}}
+        </div>
+      </div>
+
+      <!-- Database -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-info">
+            <i class="fa fa-database"></i>
+          </div>
+          <div class="settings-text">
+            Database instance name
+          </div>
+        </div>
+        <div class="settings-value">
+          {{systemData.databaseIntance}}
+        </div>
+      </div>
+
+      <!-- .NET -->
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-info">
+            <i class="fa fa-cogs"></i>
+          </div>
+          <div class="settings-text">
+            .NET version
+          </div>
+        </div>
+        <div class="settings-value">
+          {{systemData.netVersion}}
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </div>
