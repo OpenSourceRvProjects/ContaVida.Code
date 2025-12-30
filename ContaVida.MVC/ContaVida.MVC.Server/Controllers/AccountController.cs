@@ -39,6 +39,7 @@ namespace ContaVida.MVC.Server.Controllers
             }
             catch (Exception ex)
             {
+                System.IO.File.AppendAllText("exceptionsLog.txt", DateTime.Now.ToString() + "|" + ex.Message + "." + ex.InnerException?.Message + Environment.NewLine);
                 return StatusCode(500, "Error getting health");
             }
         }

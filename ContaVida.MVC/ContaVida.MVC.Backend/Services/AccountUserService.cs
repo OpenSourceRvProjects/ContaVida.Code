@@ -394,6 +394,8 @@ namespace ContaVida.MVC.Backend.Services
             try
             {
                 var flag = await _dbContext.SystemMaintenances.FirstOrDefaultAsync();
+                if (flag == null)
+                    return false;
                 return flag.IsOnMaintenance;
             }
             catch (Exception ex)
