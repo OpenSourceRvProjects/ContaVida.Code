@@ -3,6 +3,7 @@ using ContaVida.MVC.Models.Account;
 using ContaVida.MVC.Server.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace ContaVida.MVC.Server.Controllers
 {
@@ -58,6 +59,30 @@ namespace ContaVida.MVC.Server.Controllers
             {
                 return StatusCode(500, new { errorMsg = ex.Message });
             }
+        }
+
+
+        [HttpGet]
+        [Route("getSystemStackInformation")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetDotNetVersion()
+        {
+            var dotnetVersion = RuntimeInformation.FrameworkDescription;
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var sqlInstanceName = _accountService.GetDatabaseInstanceName();
+            var rootPath = AppContext.BaseDirectory;
+            var lastWriteUtc = Directory.GetLastWriteTimeUtc(rootPath);
+
+            var mexicoTimeZone = TimeZoneInfo.FindSystemTimeZoneById(
+                OperatingSystem.IsWindows()
+                    ? "Central Standard Time (Mexico)"
+                    : "America/Mexico_City"
+            );
+
+            var mexicoTime = TimeZoneInfo.ConvertTimeFromUtc(lastWriteUtc, mexicoTimeZone);
+
+            var lastWrite = Directory.GetLastWriteTime(rootPath);
+            return Ok(new { netVersion = dotnetVersion, environment = environment, databaseIntance = sqlInstanceName, lastDeployment = mexicoTime });
         }
 
     }

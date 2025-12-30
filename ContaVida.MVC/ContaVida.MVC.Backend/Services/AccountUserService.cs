@@ -446,6 +446,12 @@ namespace ContaVida.MVC.Backend.Services
         }
 
 
+        public string GetDatabaseInstanceName()
+        {
+            var databaseName = _dbContext.Database.GetDbConnection().Database;
+            return databaseName;
+        }
+
         #region helper methods
         private string GenerateToken(User newUser, PersonalProfile newProfileUser)
         {

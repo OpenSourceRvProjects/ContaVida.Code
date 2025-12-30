@@ -22,5 +22,6 @@ namespace ContaVida.MVC.Backend.Infraestructure
         public Task SetMaintenancePageWithKey(MaintenanceKeyInputModel input);
         Task<bool> GetMaintenancePageFromDB();
         Task<List<UsersModel>> GetAllUsersAsync();
+        string GetDatabaseInstanceName();
     }
 }
