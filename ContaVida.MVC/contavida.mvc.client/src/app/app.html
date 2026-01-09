@@ -1,4 +1,104 @@
-<app-nav-menu></app-nav-menu>
-<main>
-  <router-outlet></router-outlet>
-</main>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: #ffffff;
+    color: #2c2c2c;
+  }
+
+  .container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .top-image {
+    max-width: 180px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 2.3rem;
+    margin: 20px 0 10px;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 1.05rem;
+    color: #666;
+    max-width: 420px;
+  }
+
+  .icon {
+    width: 260px;
+    margin: 10px 0;
+  }
+</style>
+
+@if (!showUnderConstructionPage) {
+    <app-nav-menu></app-nav-menu>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+} @else {
+  <div class="container">
+
+    <img
+      class="top-image"
+      src="https://lh3.googleusercontent.com/d/1gHHDZMxZsDdK3hn5nbsAlfvw5qsIvBV-"
+      alt="Código en construcción"
+    />
+
+    <svg
+      class="icon"
+      viewBox="0 0 300 160"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <!-- Left bracket -->
+      <path
+        d="M80 30 L40 80 L80 130"
+        stroke="#555"
+        stroke-width="8"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+
+      <!-- Right bracket -->
+      <path
+        d="M220 30 L260 80 L220 130"
+        stroke="#555"
+        stroke-width="8"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+
+      <!-- Centered code -->
+      <g text-anchor="middle" font-family="monospace" font-size="18">
+        <text x="150" y="70" fill="#2d9cdb">function</text>
+        <text x="150" y="95" fill="#27ae60">build()</text>
+        <text x="150" y="120" fill="#9b51e0">
+          &#123; <tspan fill="#f2994a">...</tspan> &#125;
+        </text>
+      </g>
+    </svg>
+
+    <h1>Página en construcción</h1>
+
+    <p>
+      Estamos desarrollando esta app.
+      Muy pronto estará disponible.
+      Tu usuario de ngLifeCounter será el mismo que el de ContaVida.
+      Mientras vuelve a tus contadores
+      <a href="https://nglifecounter.azurewebsites.net/counter/list">aqui</a>
+    </p>
+
+  </div>
+}

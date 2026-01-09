@@ -171,21 +171,20 @@
       Información del sistema
     </div>
 
-    <div class="settings-item">
-      <div class="settings-info">
-        <div class="settings-icon icon-info">
-          <i class="fa fa-cloud-upload"></i>
-        </div>
-        <div class="settings-text">
-          Última actualización del sistema
-        </div>
-      </div>
-      <div class="settings-value">
-        {{systemData.lastDeployment | date:'dd/MM/yyyy HH:mm' }}
-      </div>
-    </div>
-
     <div class="settings-list">
+      <div class="settings-item">
+        <div class="settings-info">
+          <div class="settings-icon icon-info">
+            <i class="fa fa-cloud-upload"></i>
+          </div>
+          <div class="settings-text">
+            Última actualización del sistema
+          </div>
+        </div>
+        <div class="settings-value">
+          {{systemData.lastDeployment | date:'dd/MM/yyyy HH:mm' }}
+        </div>
+      </div>
       <!-- Environment -->
       <div class="settings-item">
         <div class="settings-info">
