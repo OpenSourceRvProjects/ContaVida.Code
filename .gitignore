@@ -3,3 +3,4 @@
 ################################################################################
 
 /ContaVida.MVC/ContaVida.MVC.Server/appsettings.uat.json
+/ContaVida.MVC/ContaVida.MVC.Server/appsettings.prod.json
