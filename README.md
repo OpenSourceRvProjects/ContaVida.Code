@@ -1,3 +1,139 @@
+# ContaVida (formerly ngLifeCounter)
+
+ContaVida is an **open source**, **free**, and **non-profit** project focused on learning, experimentation, and community collaboration in software development.
+
+This project provides **no guarantees of any kind** and offers no commitment to continuity. It is provided **“AS IS”** under the terms of the **MIT License**.
+
+---
+
+## Description
+
+ContaVida is a technology platform developed as a personal project, intended to serve as:
+- A practical development exercise
+- A technical reference
+- An educational and experimental project
+
+The project **is not designed as a commercial service**, nor does it aim to meet enterprise-level standards for availability, support, or stability.
+
+---
+
+## Key Features
+
+- **100% free** project
+- **Open source** code
+- No payment processing
+- No collection of financial information
+- Focused on learning and personal use
+- Cloud-based infrastructure
+
+---
+
+## License
+
+This project is distributed under the **MIT License**.
+
+This means you are allowed to:
+- Use the code
+- Copy it
+- Modify it
+- Fork it
+- Redistribute it
+- Integrate it into other projects
+
+As long as you include the original copyright notice and license.
+
+See the [`LICENSE`](./LICENSE) file for more information.
+
+---
+
+## Disclaimer (IMPORTANT)
+
+> **THIS PROJECT IS PROVIDED “AS IS”, WITHOUT WARRANTIES OF ANY KIND.**
+
+The author and project administrator **assume no responsibility whatsoever**, under any circumstances, for:
+
+- Security vulnerabilities  
+- Data loss  
+- Misconfiguration or improper deployment  
+- Misuse of the code  
+- Direct or indirect damages  
+- Legal non-compliance resulting from its use  
+- System downtime or service interruptions  
+
+Use of the code is **entirely at your own risk**.
+
+---
+
+## Use of Open Source Code
+
+Anyone who:
+- Downloads the code
+- Creates a fork
+- Modifies the project
+- Deploys it on their own infrastructure
+- Uses it as a base for other systems
+
+**Assumes full and exclusive responsibility** for its implementation, use, and redistribution.
+
+The author **assumes no responsibility for derivative projects**, even if they retain the name, structure, or similarities to ContaVida.
+
+---
+
+## Project Availability
+
+ContaVida is a **personal project**.
+
+- Availability is not guaranteed
+- The service may experience outages or interruptions
+- Maintenance may occur without prior notice
+- The project may be suspended or permanently discontinued at any time
+
+As a **free service**, users expressly waive any claims related to availability or continuity.
+
+---
+
+## Payments and Security
+
+- **NO payments are processed**
+- **NO financial data is requested**
+- **NO billing is managed**
+- Any payment request associated with this project should be considered **fraud or phishing**
+
+---
+
+## Contributions
+
+Contributions are welcome under the terms of the MIT License.
+
+By contributing, you agree that your code:
+- Will be distributed under the MIT License
+- Does not create any obligation, support, or liability for the original author
+
+---
+
+## Legal Notice
+
+This project does not constitute legal, financial, or security advice.  
+Use of the software implies full acceptance of the terms described herein.
+
+---
+
+## Project Status
+
+The project remains active **as long as it is personally and technically sustainable**.
+
+There are no guarantees of support or updates.
+
+---
+
+## Author
+
+Project developed and maintained independently.
+
+---
+
+**Last updated:** January 2026
+
 # ContaVida (antes ngLifeCounter)
 
 ContaVida es un proyecto **open source**, **gratuito** y **sin fines de lucro**, orientado al aprendizaje, experimentación y colaboración comunitaria en el desarrollo de software.
