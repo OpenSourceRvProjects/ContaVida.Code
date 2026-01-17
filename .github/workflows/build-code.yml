@@ -27,22 +27,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # -------------------------------------------------
-      # Setup .NET 10
-      # -------------------------------------------------
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.x'
-
-      # -------------------------------------------------
-      # Restore & Build Server ONLY
-      # -------------------------------------------------
-      - name: Restore Server
-        run: dotnet restore ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
-
-      - name: Build Server
-        run: dotnet build ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release --no-restore
 
       # -------------------------------------------------
       # Setup Node.js (Angular)
@@ -64,6 +48,24 @@ jobs:
       - name: Build Angular
         working-directory: ContaVida.MVC/contavida.mvc.client/contavida.mvc.client
         run: npm run build
+
+      # -------------------------------------------------
+      # Setup .NET 10
+      # -------------------------------------------------
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      # -------------------------------------------------
+      # Restore & Build Server ONLY
+      # -------------------------------------------------
+      - name: Restore Server
+        run: dotnet restore ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
+
+      - name: Build Server
+        run: dotnet build ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release --no-restore
+
 
 
 
