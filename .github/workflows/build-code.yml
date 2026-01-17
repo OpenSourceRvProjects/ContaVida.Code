@@ -40,11 +40,11 @@ jobs:
       # Build Angular
       # -------------------------------------------------
       - name: Install Angular dependencies
-        working-directory: ContaVida.MVC/contavida.mvc.client/contavida.mvc.client
+        working-directory: contavida.mvc.client
         run: npm ci
 
       - name: Build Angular
-        working-directory: ContaVida.MVC/contavida.mvc.client/contavida.mvc.client
+        working-directory: contavida.mvc.client
         run: npm run build
 
       # -------------------------------------------------
