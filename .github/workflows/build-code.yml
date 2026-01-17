@@ -52,17 +52,17 @@ jobs:
         with:
           node-version: '20.x'
           cache: 'npm'
-          cache-dependency-path: contavida.mvc.client/package-lock.json
+          cache-dependency-path: ContaVida.MVC/contavida.mvc.client/contavida.mvc.client/package-lock.json
 
       # -------------------------------------------------
       # Build Angular
       # -------------------------------------------------
       - name: Install Angular dependencies
-        working-directory: contavida.mvc.client
+        working-directory: ContaVida.MVC/contavida.mvc.client/contavida.mvc.client
         run: npm ci
 
       - name: Build Angular
-        working-directory: contavida.mvc.client
+        working-directory: ContaVida.MVC/contavida.mvc.client/contavida.mvc.client
         run: npm run build
 
 
