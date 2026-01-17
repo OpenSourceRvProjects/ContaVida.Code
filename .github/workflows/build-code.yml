@@ -1,0 +1,74 @@
+# Docs for the Azure Web Apps Deploy action:
+# https://github.com/Azure/webapps-deploy
+# https://github.com/Azure/actions
+
+name: Build IvoryPlanner Code
+
+on:
+  push:
+    branches:
+      - code_build
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    env:
+      CI: true
+      ASPNETCORE_ENVIRONMENT: QA
+
+    steps:
+      # -------------------------------------------------
+      # Checkout
+      # -------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------------------------------------------------
+      # Setup .NET 10
+      # -------------------------------------------------
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      # -------------------------------------------------
+      # Restore & Build Server ONLY
+      # -------------------------------------------------
+      - name: Restore Server
+        run: dotnet restore ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
+
+      - name: Build Server
+        run: dotnet build ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release --no-restore
+
+      # -------------------------------------------------
+      # Setup Node.js (Angular)
+      # -------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: contavida.mvc.client/package-lock.json
+
+      # -------------------------------------------------
+      # Build Angular
+      # -------------------------------------------------
+      - name: Install Angular dependencies
+        working-directory: contavida.mvc.client
+        run: npm ci
+
+      - name: Build Angular
+        working-directory: contavida.mvc.client
+        run: npm run build
+
+
+
+
+
+
+
+

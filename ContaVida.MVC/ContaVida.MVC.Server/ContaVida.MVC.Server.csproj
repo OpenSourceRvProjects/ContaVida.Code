@@ -24,7 +24,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ContaVida.MVC.Backend\ContaVida.MVC.Backend.csproj" />
-		<ProjectReference Include="..\contavida.mvc.client\contavida.mvc.client.esproj">
+		<ProjectReference Include="..\contavida.mvc.client\contavida.mvc.client.esproj" Condition="'$(CI)' != 'true'">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 		</ProjectReference>
 		<ProjectReference Include="..\ContaVida.MVC.DataAccess\ContaVida.MVC.DataAccess.csproj" />
