@@ -27,6 +27,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+
+      # -------------------------------------------------
+      # Setup Node.js (Angular)
+      # -------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: ContaVida.MVC/contavida.mvc.client/package-lock.json
+
+      # -------------------------------------------------
+      # Build Angular
+      # -------------------------------------------------
+      - name: Install Angular dependencies
+        working-directory: ContaVida.MVC/contavida.mvc.client
+        run: npm ci
+
+      - name: Build Angular
+        working-directory: ContaVida.MVC/contavida.mvc.client
+        run: npm run build
+
       # -------------------------------------------------
       # Setup .NET 10
       # -------------------------------------------------
@@ -39,31 +61,11 @@ jobs:
       # Restore & Build Server ONLY
       # -------------------------------------------------
       - name: Restore Server
-        run: dotnet restore ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
+        run: dotnet restore ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
 
       - name: Build Server
-        run: dotnet build ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release --no-restore
+        run: dotnet build ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release --no-restore
 
-      # -------------------------------------------------
-      # Setup Node.js (Angular)
-      # -------------------------------------------------
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-          cache: 'npm'
-          cache-dependency-path: contavida.mvc.client/package-lock.json
-
-      # -------------------------------------------------
-      # Build Angular
-      # -------------------------------------------------
-      - name: Install Angular dependencies
-        working-directory: contavida.mvc.client
-        run: npm ci
-
-      - name: Build Angular
-        working-directory: contavida.mvc.client
-        run: npm run build
 
 
 
