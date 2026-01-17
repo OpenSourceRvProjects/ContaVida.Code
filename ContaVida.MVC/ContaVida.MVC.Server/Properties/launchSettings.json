@@ -24,7 +24,7 @@
     "dev-env": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "applicationUrl": "https://localhost:7109;http://localhost:5200",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "dev",
@@ -42,7 +42,7 @@
     "qa-env": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "applicationUrl": "https://localhost:7109;http://localhost:5200",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "qa",
@@ -60,7 +60,7 @@
     "uat-env": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "applicationUrl": "https://localhost:7109;http://localhost:5200",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "uat",
@@ -78,7 +78,7 @@
     "prod-env": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "applicationUrl": "https://localhost:7109;http://localhost:5200",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "prod",
