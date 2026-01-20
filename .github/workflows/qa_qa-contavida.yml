@@ -1,6 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
+
 name: Build and deploy ASP.Net Core app to Azure Web App - qa-contavida
 
 on:
@@ -15,25 +16,81 @@ jobs:
     permissions:
       contents: read #This is required for actions/checkout
 
-    steps:
-      - uses: actions/checkout@v4
+    env:
+      CI: true
+      ASPNETCORE_ENVIRONMENT: QA
 
-      - name: Set up .NET Core
+    steps:
+      steps:
+      # -------------------------------------------------
+      # Checkout
+      # -------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+      # -------------------------------------------------
+      # Setup Node.js (Angular)
+      # -------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: ContaVida.MVC/contavida.mvc.client/package-lock.json
+
+      # -------------------------------------------------
+      # Build Angular
+      # -------------------------------------------------
+      - name: Install Angular dependencies
+        working-directory: ContaVida.MVC/contavida.mvc.client
+        run: npm ci
+
+      - name: Build Angular
+        working-directory: ContaVida.MVC/contavida.mvc.client
+        run: npm run build
+
+      # -------------------------------------------------
+      # Setup .NET 10
+      # -------------------------------------------------
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.x'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      # -------------------------------------------------
+      # Restore & Build Server ONLY
+      # -------------------------------------------------
+      - name: Restore Server
+        run: dotnet restore ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+      - name: Build Server
+        run: dotnet build ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release --no-restore
+      # -------------------------------------------------
+      # COPY ANGULAR OUTPUT INTO WWWROOT (CRITICAL STEP)
+      # -------------------------------------------------
+      - name: Copy Angular files to wwwroot
+        shell: pwsh
+        run: |
+          $angularDist = "contavida.web.client/dist/contavida.web.client/browser"
+          $wwwroot = "${{ github.workspace }}/publish/wwwroot"
 
-      - name: Upload artifact for deployment job
+          if (!(Test-Path $angularDist)) {
+            Write-Error "Angular dist folder not found: $angularDist"
+          }
+
+          New-Item -ItemType Directory -Force -Path $wwwroot | Out-Null
+          Copy-Item -Path "$angularDist\*" -Destination $wwwroot -Recurse -Force
+
+      # -------------------------------------------------
+      # Upload artifact
+      # -------------------------------------------------
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          name: qa-contavida
+          path: ${{ github.workspace }}/publish
+
 
   deploy:
     runs-on: windows-latest
