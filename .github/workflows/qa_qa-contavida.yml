@@ -61,12 +61,6 @@ jobs:
       - name: Build Server
         run: dotnet build ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release --no-restore
 
-      # -------------------------------------------------
-      # Prepare publish folder
-      # -------------------------------------------------
-      - name: Publish Server
-        run: dotnet publish ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release -o ${{ github.workspace }}/publish
-
        # -------------------------------------------------
       # Publish Server (QA)
       # -------------------------------------------------
