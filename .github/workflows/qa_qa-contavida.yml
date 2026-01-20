@@ -68,7 +68,7 @@ jobs:
       - name: Copy Angular files to wwwroot
         shell: pwsh
         run: |
-          $angularDist = "contavida.web.client/dist/contavida.web.client/browser"
+          $angularDist = "contavida.mvc.client/dist/contavida.mvc.client/browser"
           $wwwroot = "${{ github.workspace }}/publish/wwwroot"
 
           if (!(Test-Path $angularDist)) {
