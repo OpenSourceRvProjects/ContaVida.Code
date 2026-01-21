@@ -67,7 +67,7 @@ jobs:
       - name: Publish ASP.NET Core (QA)
         run: >
           dotnet publish
-          ContaVida.MVC/ContaVida.MVC.Server/IvoryPlanner.WEB.Server.csproj
+          ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
           -c Release
           -o "${{ github.workspace }}/publish"
           --no-build
