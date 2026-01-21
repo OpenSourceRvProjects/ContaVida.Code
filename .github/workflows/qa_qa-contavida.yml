@@ -1,0 +1,119 @@
+name: Build and deploy ASP.Net Core app to Azure Web App - qa-contavida
+
+on:
+  push:
+    branches:
+      - qa
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    env:
+      CI: true
+      ASPNETCORE_ENVIRONMENT: QA
+
+    steps:
+      # -------------------------------------------------
+      # Checkout
+      # -------------------------------------------------
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -------------------------------------------------
+      # Setup Node.js (Angular)
+      # -------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: ContaVida.MVC/contavida.mvc.client/package-lock.json
+
+      # -------------------------------------------------
+      # Build Angular
+      # -------------------------------------------------
+      - name: Install Angular dependencies
+        working-directory: ContaVida.MVC/contavida.mvc.client
+        run: npm ci
+
+      - name: Build Angular
+        working-directory: ContaVida.MVC/contavida.mvc.client
+        run: npm run build
+
+      # -------------------------------------------------
+      # Setup .NET 10
+      # -------------------------------------------------
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      # -------------------------------------------------
+      # Restore & Build Server ONLY
+      # -------------------------------------------------
+      - name: Restore Server
+        run: dotnet restore ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
+
+      - name: Build Server
+        run: dotnet build ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj -c Release --no-restore
+
+       # -------------------------------------------------
+      # Publish Server (QA)
+      # -------------------------------------------------
+      - name: Publish ASP.NET Core (QA)
+        run: >
+          dotnet publish
+          ContaVida.MVC/ContaVida.MVC.Server/ContaVida.MVC.Server.csproj
+          -c Release
+          -o "${{ github.workspace }}/publish"
+          --no-build
+          /p:EnvironmentName=QA
+
+
+      # -------------------------------------------------
+      # Copy Angular output into wwwroot
+      # -------------------------------------------------
+      - name: Copy Angular files to wwwroot
+        shell: pwsh
+        run: |
+          $angularDist = "${{ github.workspace }}/ContaVida.MVC/contavida.mvc.client/dist/contavida.mvc.client/browser"
+          $wwwroot = "${{ github.workspace }}/publish/wwwroot"
+
+          if (!(Test-Path $angularDist)) {
+            Write-Error "Angular dist folder not found: $angularDist"
+          }
+
+          New-Item -ItemType Directory -Force -Path $wwwroot | Out-Null
+          Copy-Item -Path "$angularDist\*" -Destination $wwwroot -Recurse -Force
+
+      # -------------------------------------------------
+      # Upload artifact
+      # -------------------------------------------------
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-contavida
+          path: ${{ github.workspace }}/publish
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: qa-contavida
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'qa-contavida'
+          slot-name: 'Production'
+          package: .
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2D641FFD7D6B4D0C9C754F4B513CBB44 }}
