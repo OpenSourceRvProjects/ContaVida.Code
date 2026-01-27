@@ -17,8 +17,8 @@ namespace ContaVida.MVC.Server.Controllers
         private IEventConstancyService _eventConstancyService;
         private readonly IWebHostEnvironment _hostingEnv;
 
-        public EventCounterController(IHttpContextAccessor accessor, 
-            IEventCounterService eventService, IWebHostEnvironment hostingEnv, 
+        public EventCounterController(IHttpContextAccessor accessor,
+            IEventCounterService eventService, IWebHostEnvironment hostingEnv,
             IEventConstancyService eventConstancyService)
         {
             _accessor = accessor;
@@ -63,8 +63,18 @@ namespace ContaVida.MVC.Server.Controllers
         [Route("getConstancyDocument")]
         public async Task<IActionResult> GetPDF(Guid counterID)
         {
-            return Ok(_eventConstancyService.GenerateConstancyDocument(counterID));
-         
+            try
+            {
+
+                var imagePath = "";
+
+                return Ok(_eventConstancyService.GenerateConstancyDocument(counterID, imagePath));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         // POST api/<EventCounterController>

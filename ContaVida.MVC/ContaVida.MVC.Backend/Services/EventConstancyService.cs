@@ -1,6 +1,8 @@
 ﻿using ContaVida.MVC.Backend.Infraestructure;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +11,13 @@ namespace ContaVida.MVC.Backend.Services
 {
     public class EventConstancyService : IEventConstancyService
     {
-        public byte[] GenerateConstancyDocument(Guid eventID)
+        private IHttpContextAccessor _accessor;
+        public EventConstancyService(IHttpContextAccessor accesor)
+        {
+            _accessor = accesor;
+        }
+
+        public byte[] GenerateConstancyDocument(Guid eventID, string imagePath)
         {
             iTextSharp.text.Document doc = new iTextSharp.text.Document(PageSize.A4.Rotate(), 70f, 70f, 10f, 0f);
             MemoryStream workStream = new MemoryStream();
@@ -19,10 +27,19 @@ namespace ContaVida.MVC.Backend.Services
             doc.Add(Chunk.NEWLINE);
             doc.Add(Chunk.NEWLINE);
 
-            var dir = Directory.GetCurrentDirectory();
 
-            string fullPath = Path.Combine(dir, "Assets\\constancy.jpg");
-            iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(fullPath);
+            var request = _accessor.HttpContext.Request;
+            var localImageServerPath = $"{request.Scheme}://{request.Host}/constancy.jpg";
+
+            if (localImageServerPath.Contains("localhost"))
+            {
+                var dir = Directory.GetCurrentDirectory();
+
+                string fullPath = Path.Combine(dir, "Assets\\constancy.jpg");
+                localImageServerPath = fullPath;
+            }
+            var image = iTextSharp.text.Image.GetInstance(localImageServerPath);
+            iTextSharp.text.Image jpg = iTextSharp.text.Image.GetInstance(image);
 
             jpg.Alignment = iTextSharp.text.Image.UNDERLYING;
 

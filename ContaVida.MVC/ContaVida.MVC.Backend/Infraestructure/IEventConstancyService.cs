@@ -6,6 +6,6 @@ namespace ContaVida.MVC.Backend.Infraestructure
 {
     public interface IEventConstancyService
     {
-        public byte[] GenerateConstancyDocument(Guid eventID);
+        public byte[] GenerateConstancyDocument(Guid eventID, string imagePath);
     }
 }
