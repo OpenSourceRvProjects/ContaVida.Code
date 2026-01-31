@@ -67,8 +67,8 @@ namespace ContaVida.MVC.Server.Controllers
             {
 
                 var imagePath = "";
-
-                return Ok(_eventConstancyService.GenerateConstancyDocument(counterID, imagePath));
+                var result = await _eventConstancyService.GenerateConstancyDocument(counterID, imagePath);
+                return Ok(result);
             }
             catch (Exception ex)
             {
