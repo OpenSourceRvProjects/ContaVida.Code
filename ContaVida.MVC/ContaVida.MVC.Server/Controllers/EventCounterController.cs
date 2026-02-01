@@ -80,7 +80,7 @@ namespace ContaVida.MVC.Server.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("getVerificationByStamp")]
-        public async Task<IActionResult> GetDocumentVerification(string stamp)
+        public async Task<IActionResult> GetDocumentVerification(string stamp )
         {
             try
             {
