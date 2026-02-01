@@ -77,6 +77,23 @@ namespace ContaVida.MVC.Server.Controllers
 
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("getVerificationByStamp")]
+        public async Task<IActionResult> GetDocumentVerification(string stamp)
+        {
+            try
+            {
+                var result = await _eventConstancyService.VerifyConstancyDocument(stamp);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
         // POST api/<EventCounterController>
         [HttpPost]
         [LoggedUserDataFilter]

@@ -1,5 +1,6 @@
 ﻿using ContaVida.MVC.Backend.Infraestructure;
 using ContaVida.MVC.DataAccess.DataAccess;
+using ContaVida.MVC.Models.EventConstancyDocument;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +26,7 @@ namespace ContaVida.MVC.Backend.Services
         public async Task<byte[]> GenerateConstancyDocument(Guid eventID, string imagePath)
         {
 
-            var eventCounter = await _dbContext.EventCounters.Include(i=> i.PersonalProfile).FirstOrDefaultAsync(f=> f.Id == eventID);
+            var eventCounter = await _dbContext.EventCounters.Include(i => i.PersonalProfile).Include(thi=> thi.User).FirstOrDefaultAsync(f => f.Id == eventID);
 
             if (eventCounter == null)
             {
@@ -37,24 +38,19 @@ namespace ContaVida.MVC.Backend.Services
             PdfWriter.GetInstance(doc, workStream).CloseStream = false;
             doc.Open();
             // Add a simple and wellknown phrase to the document in a flow layout manner  
-            doc.Add(Chunk.NEWLINE);
-
-            iTextSharp.text.Font blankParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 20, iTextSharp.text.Font.NORMAL, BaseColor.BLUE);
-            Paragraph blankParagraph = new Paragraph("  ", blankParagraphFont);
-            blankParagraph.Alignment = Element.ALIGN_CENTER;
-            doc.Add(blankParagraph);
+            //AddBlankSpace(doc);
 
             var request = _accessor.HttpContext.Request;
-            var localImageServerPath = $"{request.Scheme}://{request.Host}/constancy.jpg";
-            var localcontaVidaImageserverPath = $"{request.Scheme}://{request.Host}/contavidaLogo.png";
+            var localImageServerPath = $"{request.Scheme}://{request.Host}/constancyCompressed.jpg";
+            var localcontaVidaImageserverPath = $"{request.Scheme}://{request.Host}/contavidaLogoCompressed.png";
 
             if (localImageServerPath.Contains("localhost"))
             {
                 var dir = Directory.GetCurrentDirectory();
-                string fullPathBackground = Path.Combine(dir, "Assets\\constancy.jpg");
+                string fullPathBackground = Path.Combine(dir, "Assets\\constancyCompressed.jpg");
                 localImageServerPath = fullPathBackground;
 
-                string fullPathContaVida = Path.Combine(dir, "Assets\\contavidaLogo.png");
+                string fullPathContaVida = Path.Combine(dir, "Assets\\contavidaLogoCompressed.png");
                 localcontaVidaImageserverPath = fullPathContaVida;
             }
             var image = iTextSharp.text.Image.GetInstance(localImageServerPath);
@@ -67,34 +63,105 @@ namespace ContaVida.MVC.Backend.Services
 
             doc.Add(jpg);
 
-            iTextSharp.text.Font normalTextFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 42, iTextSharp.text.Font.NORMAL, BaseColor.BLUE);
-            Paragraph paragraph = new Paragraph("Constancia.", normalTextFont);
+            iTextSharp.text.Font normalTextFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 36, iTextSharp.text.Font.NORMAL, new BaseColor(38, 95, 43));
+            Paragraph paragraph = new Paragraph("CONSTANCIA", normalTextFont);
             paragraph.Alignment = Element.ALIGN_CENTER;
             doc.Add(paragraph);
 
-            // ContaVida logo UNDER the title
-            var contaVidaLogo = iTextSharp.text.Image.GetInstance(localcontaVidaImageserverPath);
-            contaVidaLogo.ScaleToFit(200f, 200f); // medium size
-            contaVidaLogo.Alignment = Element.ALIGN_CENTER;
-            contaVidaLogo.SpacingBefore = 5f;
-            contaVidaLogo.SpacingAfter = 10f;
+            InsertContaVidaLogo(doc, localcontaVidaImageserverPath);
+            InsertProfileNameForUser(eventCounter, doc);
 
-            doc.Add(contaVidaLogo);
-
-
-
-            iTextSharp.text.Font nameParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 25, iTextSharp.text.Font.UNDERLINE, BaseColor.BLACK);
-            Paragraph nameParagraph = new Paragraph(eventCounter.PersonalProfile.Name + " " + eventCounter.PersonalProfile.LastName1, nameParagraphFont);
-            nameParagraph.Alignment = Element.ALIGN_CENTER;
-            doc.Add(nameParagraph);
-
-
-            iTextSharp.text.Font congratsParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 20, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
-            Paragraph paragraphCongrats = new Paragraph("¡Felicidades!. De parte de ContaVida te hicimos un reconocimiento por: ", congratsParagraphFont);
+            iTextSharp.text.Font congratsParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 16, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Paragraph paragraphCongrats = new Paragraph("¡Felicidades!. De parte de ContaVida te hicimos un reconocimiento ", congratsParagraphFont);
             paragraphCongrats.Alignment = Element.ALIGN_CENTER;
             doc.Add(paragraphCongrats);
 
+            InsertEventNameAndTime(eventCounter, doc);
+            InsertQR(eventCounter, doc);
 
+            var legalStatement = "*Aviso: El presente documento tiene únicamente fines informativos y de referencia. No constituye un documento oficial, certificado," +
+                " ni tiene validez legal ante autoridades públicas o privadas. Contavida no asume responsabilidad alguna por el uso indebido, alteración, reproducción, falsificación" +
+                " o interpretación del contenido de este documento, ni por cualquier daño o perjuicio derivado directa o indirectamente de su utilización. La verificación proporcionada" +
+                " por el sistema tiene carácter meramente informativo y no implica garantía de autenticidad, integridad o vigencia del documento.";
+            // Close the document  
+
+            iTextSharp.text.Font legalParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 6, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Paragraph legalParagraph = new Paragraph(legalStatement, legalParagraphFont);
+            legalParagraph.Alignment = Element.ALIGN_JUSTIFIED;
+            doc.Add(legalParagraph);
+            doc.Close();
+            // Close the writer instance  
+            var docBytes = workStream.ToArray();
+            return docBytes;
+        }
+
+        public async Task<EventConstancyVerifierModel> VerifyConstancyDocument(string stamp)
+        {
+            var verificationResult = new EventConstancyVerifierModel() { IsVerified = false };
+
+            try
+            {
+                var stampParts = stamp.Split('|');
+                if (stampParts.Length != 3)
+                {
+                    return verificationResult;
+                }
+                var eventId = Guid.Parse(stampParts[0]);
+                var userId = Guid.Parse(stampParts[1]);
+                var personalProfileId = Guid.Parse(stampParts[2]);
+                var eventCounter = await _dbContext.EventCounters
+                    .Include(i => i.PersonalProfile)
+                    .FirstOrDefaultAsync(f => f.Id == eventId && f.UserId == userId && f.PersonalProfileId == personalProfileId);
+
+                if (eventCounter == null)
+                    return verificationResult;
+
+                return new EventConstancyVerifierModel()
+                {
+                    IsVerified = true,
+                    IssuedTo = eventCounter.PersonalProfile.Name + " " + eventCounter.PersonalProfile.LastName1,
+                    OriginalSetUpDate = new DateTime((int)eventCounter.StartYear, eventCounter.StartMonth, eventCounter.StartDay),
+                    RelapseEpisodes = await _dbContext.Relapses.CountAsync(c => c.EventCounterId == eventCounter.Id)
+                };
+            }
+            catch
+            {
+                return new EventConstancyVerifierModel() { IsVerified = false };
+            }
+        }
+
+        private void InsertQR(EventCounter eventCounter, Document doc)
+        {
+            var request = _accessor.HttpContext.Request;
+            iTextSharp.text.Font stampParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            var stampText = eventCounter.Id.ToString().ToUpper() + "|" + eventCounter.UserId.ToString().ToUpper() + "|" + eventCounter.PersonalProfileId.ToString().ToUpper();
+            BarcodeQRCode barcodeQRCode = new BarcodeQRCode($"{request.Scheme}://{request.Host}/counter/verification?stamp=" + stampText, 120, 120, null);
+            var qrImage = barcodeQRCode.GetImage();
+            qrImage.Alignment = Element.ALIGN_RIGHT;
+            doc.Add(qrImage);
+
+            var linkFont = new Font(
+                stampParagraphFont.BaseFont,
+                stampParagraphFont.Size,
+                Font.UNDERLINE,
+                BaseColor.BLUE
+            );
+
+            Paragraph stampParagraph = new Paragraph();
+            stampParagraph.Alignment = Element.ALIGN_RIGHT;
+
+            // Create clickable link
+            var link = new Anchor("Verificación: " + stampText, linkFont)
+            {
+                Reference = $"{request.Scheme}://{request.Host}/counter/verification?stamp=" + stampText // must be a valid URL
+            };
+
+            stampParagraph.Add(link);
+            doc.Add(stampParagraph);
+        }
+
+        private static void InsertEventNameAndTime(EventCounter eventCounter, Document doc)
+        {
             var date = new DateTime((int)eventCounter.StartYear, eventCounter.StartMonth, eventCounter.StartDay);
             var now = DateTime.UtcNow;
 
@@ -108,7 +175,7 @@ namespace ContaVida.MVC.Backend.Services
             if (diffDays < 365)
             {
                 timeUnit = "días";
-                quantityTime= diffDays;
+                quantityTime = diffDays;
             }
             else
             {
@@ -123,24 +190,39 @@ namespace ContaVida.MVC.Backend.Services
             Paragraph eventParagraph = new Paragraph(eventCounter.EventName + ": " + quantityTime + " " + timeUnit, eventParagraphFont);
             eventParagraph.Alignment = Element.ALIGN_CENTER;
             doc.Add(eventParagraph);
+        }
 
+        private static void InsertProfileNameForUser(EventCounter eventCounter, Document doc)
+        {
+            iTextSharp.text.Font nameParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 20, iTextSharp.text.Font.UNDERLINE, BaseColor.BLACK);
+            Paragraph nameParagraph = new Paragraph(eventCounter.PersonalProfile.Name + " " + eventCounter.PersonalProfile.LastName1, nameParagraphFont);
+            nameParagraph.Alignment = Element.ALIGN_CENTER;
+            doc.Add(nameParagraph);
 
-            iTextSharp.text.Font stampParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            iTextSharp.text.Font userParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Paragraph userParagraph = new Paragraph("Usuario: " + eventCounter.User.UserName, userParagraphFont);
+            userParagraph.Alignment = Element.ALIGN_CENTER;
+            doc.Add(userParagraph);
+        }
 
-            var stampText = eventCounter.Id.ToString().ToUpper() + "|" +  eventCounter.UserId.ToString().ToUpper()  +"|" + eventCounter.PersonalProfileId.ToString();
+        private static void InsertContaVidaLogo(Document doc, string localcontaVidaImageserverPath)
+        {
+            // ContaVida logo UNDER the title
+            var contaVidaLogo = iTextSharp.text.Image.GetInstance(localcontaVidaImageserverPath);
+            contaVidaLogo.ScaleToFit(125f, 125f); // medium size
+            contaVidaLogo.Alignment = Element.ALIGN_CENTER;
+            contaVidaLogo.SpacingBefore = 1f;
+            contaVidaLogo.SpacingAfter = 2;
+
+            doc.Add(contaVidaLogo);
+        }
+
+        private static void AddBlankSpace(Document doc)
+        {
+            iTextSharp.text.Font blankParagraphFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 6, iTextSharp.text.Font.NORMAL, BaseColor.BLUE);
+            Paragraph blankParagraph = new Paragraph("  ", blankParagraphFont);
+            blankParagraph.Alignment = Element.ALIGN_CENTER;
             doc.Add(blankParagraph);
-            doc.Add(blankParagraph);
-
-
-            Paragraph stampParagraph = new Paragraph("Sello de autenticidad: "+ stampText, stampParagraphFont);
-            stampParagraph.Alignment = Element.ALIGN_RIGHT;
-            doc.Add(stampParagraph);
-
-            // Close the document  
-            doc.Close();
-            // Close the writer instance  
-            var docBytes = workStream.ToArray();
-            return docBytes;
         }
     }
 }
