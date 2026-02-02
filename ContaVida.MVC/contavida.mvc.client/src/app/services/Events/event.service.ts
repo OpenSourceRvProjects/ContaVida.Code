@@ -68,6 +68,10 @@ export class EventService {
     return this.http.get<Blob>(url + "api/EventCounter/getConstancyDocument?counterID=" + id);
   }
 
+    verifyDocumentStamp(stamp: string) {
+    var url = this.baseUrl;
+    return this.http.get(url + "api/EventCounter/getVerificationByStamp?stamp=" + stamp);
+  }
 
 
   getMonths(){

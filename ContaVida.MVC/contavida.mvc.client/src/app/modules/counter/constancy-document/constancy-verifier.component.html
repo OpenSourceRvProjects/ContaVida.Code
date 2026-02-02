@@ -113,6 +113,7 @@
     Verificación de la constancia
   </h4>
 
+  @if (!processing){
   <div class="settings-wrapper container">
     <div class="settings-card">
 
@@ -133,7 +134,7 @@
             </div>
           </div>
           <div class="settings-value">
-            <!-- {{ validationStatus }} -->
+            {{verifiCationResult.isVerified ? 'Válido' : 'NO VÁLIDO'}}
           </div>
         </div>
       </div>
@@ -148,7 +149,7 @@
         <div class="settings-item">
           <div class="settings-info">
             <div class="settings-icon icon-info">
-              <i class="fa fa-fingerprint"></i>
+              <i class="fa fa-code"></i>
             </div>
             <div class="settings-text">
               Sello de verificación
@@ -177,14 +178,27 @@
             </div>
           </div>
           <div class="settings-value">
-            <!-- {{ recognitionName }} -->
+            {{ verifiCationResult.issuedTo}}
+          </div>
+        </div>
+
+        <div class="settings-item">
+          <div class="settings-info">
+            <div class="settings-icon icon-docs">
+              <i class="fa fa-user"></i>
+            </div>
+            <div class="settings-text">
+              Usuario
+            </div>
+          </div>
+          <div class="settings-value">
+            {{ verifiCationResult.userName}}
           </div>
         </div>
       </div>
 
       <!-- ID DEL EVENTO -->
       <div class="settings-title mt-5">
-        <i class="fa fa-id-card"></i>
         Evento
       </div>
 
@@ -192,18 +206,19 @@
         <div class="settings-item">
           <div class="settings-info">
             <div class="settings-icon icon-code">
-              <i class="fa fa-hashtag"></i>
+              <i class="fa fa-calendar"></i>
             </div>
             <div class="settings-text">
-              ID del evento
+              Fecha de evento
             </div>
           </div>
           <div class="settings-value">
-            <!-- {{ eventId }} -->
+            {{ verifiCationResult.originalSetUpDate | date:'yyyy-MM-dd' }}
           </div>
         </div>
       </div>
 
     </div>
   </div>
+}
 

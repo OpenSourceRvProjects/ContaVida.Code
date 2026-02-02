@@ -111,6 +111,7 @@ namespace ContaVida.MVC.Backend.Services
                 var personalProfileId = Guid.Parse(stampParts[2]);
                 var eventCounter = await _dbContext.EventCounters
                     .Include(i => i.PersonalProfile)
+                    .Include(thi => thi.User)
                     .FirstOrDefaultAsync(f => f.Id == eventId && f.UserId == userId && f.PersonalProfileId == personalProfileId);
 
                 if (eventCounter == null)
@@ -121,7 +122,8 @@ namespace ContaVida.MVC.Backend.Services
                     IsVerified = true,
                     IssuedTo = eventCounter.PersonalProfile.Name + " " + eventCounter.PersonalProfile.LastName1,
                     OriginalSetUpDate = new DateTime((int)eventCounter.StartYear, eventCounter.StartMonth, eventCounter.StartDay),
-                    RelapseEpisodes = await _dbContext.Relapses.CountAsync(c => c.EventCounterId == eventCounter.Id)
+                    RelapseEpisodes = await _dbContext.Relapses.CountAsync(c => c.EventCounterId == eventCounter.Id),
+                    UserName = eventCounter.User.UserName
                 };
             }
             catch

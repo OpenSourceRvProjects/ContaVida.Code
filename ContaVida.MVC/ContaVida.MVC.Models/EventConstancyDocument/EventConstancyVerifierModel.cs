@@ -10,5 +10,6 @@ namespace ContaVida.MVC.Models.EventConstancyDocument
         public string IssuedTo { get; set; }
         public DateTime OriginalSetUpDate { get; set; }
         public int RelapseEpisodes { get; set; }
+        public string UserName { get; set; }
     }
 }
