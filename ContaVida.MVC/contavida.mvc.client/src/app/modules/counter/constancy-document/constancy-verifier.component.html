@@ -212,7 +212,7 @@
               Fecha de evento
             </div>
           </div>
-          <div class="settings-value">
+          <div *ngIf="verifiCationResult.isVerified " class="settings-value">
             {{ verifiCationResult.originalSetUpDate | date:'yyyy-MM-dd' }}
           </div>
         </div>
