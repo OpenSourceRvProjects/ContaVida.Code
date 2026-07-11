@@ -144,6 +144,8 @@
 
     </div>
 
+   
+
     <!-- REWARD COIN -->
     <reward-coin
       *ngIf="relapsesData.timeQuantitySinceLastIssue >= 0"
@@ -153,6 +155,13 @@
     </reward-coin>
 
   </div>
+
+   <div *ngIf="relapsesData.timeQuantitySinceLastIssue >= 0" class="text-center mt-2">
+      <button (click)="donwoloadConstancyDocument()" class="btn btn-outline-success">
+        <i class="fa fa-file-pdf-o"></i> Constancia
+      </button>
+    </div>
+    <br>
 
   <!-- ===== FOOTER ===== -->
   <div class="modal-footer">

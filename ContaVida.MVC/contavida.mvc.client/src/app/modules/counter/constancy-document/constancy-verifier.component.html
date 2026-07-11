@@ -1,0 +1,224 @@
+  <style>
+    .settings-wrapper {
+      max-width: 720px;
+      margin: 3rem auto;
+      animation: fadeUp 0.4s ease;
+    }
+
+    .settings-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .settings-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #212529;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .settings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8f9fa;
+      border-radius: 14px;
+      padding: 16px 18px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .settings-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .settings-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .settings-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    /* solid colors ONLY */
+    .icon-monitor {
+      background: #3810db;
+    }
+
+    .icon-docs {
+      background: #198754;
+    }
+
+    .icon-code {
+      background: #212529;
+    }
+
+    .icon-info {
+      background: #0d6efd;
+    }
+
+    .settings-text {
+      font-weight: 600;
+      color: #212529;
+    }
+
+    .settings-value {
+  font-weight: 600;
+  color: #495057;
+  max-width: 45%;
+  text-align: right;
+  word-break: break-all;
+  flex-shrink: 0;
+}
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+
+
+
+  <!-- Logo component -->
+  <form-logo></form-logo>
+
+  <h4 class="text-center mt-3">
+    Verificación de la constancia
+  </h4>
+
+  @if (!processing){
+  <div class="settings-wrapper container">
+    <div class="settings-card">
+
+      <!-- VALIDACIÓN -->
+      <div class="settings-title">
+        <i class="fa fa-check-circle"></i>
+        Validación
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-item">
+          <div class="settings-info">
+            <div class="settings-icon icon-docs">
+              <i class="fa fa-shield"></i>
+            </div>
+            <div class="settings-text">
+              Estado del certificado
+            </div>
+          </div>
+          <div class="settings-value">
+            {{verifiCationResult.isVerified ? 'Válido' : 'NO VÁLIDO'}}
+          </div>
+        </div>
+      </div>
+
+      <!-- SELLO -->
+      <div class="settings-title mt-5">
+        <i class="fa fa-stamp"></i>
+        Sello
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-item">
+          <div class="settings-info">
+            <div class="settings-icon icon-info">
+              <i class="fa fa-code"></i>
+            </div>
+            <div class="settings-text">
+              Sello de verificación
+            </div>
+          </div>
+          <div class="settings-value">
+            {{ stamp }}
+          </div>
+        </div>
+      </div>
+
+      <!-- NOMBRE DEL RECONOCIMIENTO -->
+      <div class="settings-title mt-5">
+        <i class="fa fa-award"></i>
+        Reconocimiento
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-item">
+          <div class="settings-info">
+            <div class="settings-icon icon-monitor">
+              <i class="fa fa-certificate"></i>
+            </div>
+            <div class="settings-text">
+              Nombre del reconocimiento
+            </div>
+          </div>
+          <div class="settings-value">
+            {{ verifiCationResult.issuedTo}}
+          </div>
+        </div>
+
+        <div class="settings-item">
+          <div class="settings-info">
+            <div class="settings-icon icon-docs">
+              <i class="fa fa-user"></i>
+            </div>
+            <div class="settings-text">
+              Usuario
+            </div>
+          </div>
+          <div class="settings-value">
+            {{ verifiCationResult.userName}}
+          </div>
+        </div>
+      </div>
+
+      <!-- ID DEL EVENTO -->
+      <div class="settings-title mt-5">
+        Evento
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-item">
+          <div class="settings-info">
+            <div class="settings-icon icon-code">
+              <i class="fa fa-calendar"></i>
+            </div>
+            <div class="settings-text">
+              Fecha de evento
+            </div>
+          </div>
+          <div *ngIf="verifiCationResult.isVerified " class="settings-value">
+            {{ verifiCationResult.originalSetUpDate | date:'yyyy-MM-dd' }}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}
+

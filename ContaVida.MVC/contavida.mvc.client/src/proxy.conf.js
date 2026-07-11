@@ -35,7 +35,8 @@ const PROXY_CONFIG = [
       "/api/EventCounter/deleteCounterByID",
       "/api/Account/changePassword",
       "/api/Account/maintenancePage",
-      "/api/Admin/getSystemStackInformation"
+      "/api/Admin/getSystemStackInformation",
+      "/api/EventCounter/getVerificationByStamp", 
     ],
     target,
     secure: false

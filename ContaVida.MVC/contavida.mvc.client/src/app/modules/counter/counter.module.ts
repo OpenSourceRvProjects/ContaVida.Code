@@ -14,6 +14,7 @@ import { CounterRoutingModule } from './counter-routing.module';
 import { MyCounterComponent } from './my-counter/my-counter.component';
 import { SharedModule } from '../shared/shared.module.';
 import { AddCounterComponent } from './add/add-counter.component';
+import { ConstancyVerifierComponent } from './constancy-document/constancy-verifier.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AddCounterComponent } from './add/add-counter.component';
     ModalEditComponent,
     ModalRelapsesComponent,
     ModalDeleteCounterComponent,
+    ConstancyVerifierComponent
   ],
   imports: [
     CounterRoutingModule,

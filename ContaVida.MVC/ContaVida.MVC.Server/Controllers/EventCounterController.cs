@@ -14,13 +14,17 @@ namespace ContaVida.MVC.Server.Controllers
 
         private IHttpContextAccessor _accessor;
         private IEventCounterService _eventService;
+        private IEventConstancyService _eventConstancyService;
         private readonly IWebHostEnvironment _hostingEnv;
 
-        public EventCounterController(IHttpContextAccessor accessor, IEventCounterService eventService, IWebHostEnvironment hostingEnv)
+        public EventCounterController(IHttpContextAccessor accessor,
+            IEventCounterService eventService, IWebHostEnvironment hostingEnv,
+            IEventConstancyService eventConstancyService)
         {
             _accessor = accessor;
             _eventService = eventService;
             _hostingEnv = hostingEnv;
+            _eventConstancyService = eventConstancyService;
         }
         // GET: api/<EventCounterController>
         [HttpGet]
@@ -52,6 +56,42 @@ namespace ContaVida.MVC.Server.Controllers
                 return Unauthorized();
             }
             return Ok(counterData);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("getConstancyDocument")]
+        public async Task<IActionResult> GetPDF(Guid counterID)
+        {
+            try
+            {
+
+                var imagePath = "";
+                var result = await _eventConstancyService.GenerateConstancyDocument(counterID, imagePath);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("getVerificationByStamp")]
+        public async Task<IActionResult> GetDocumentVerification(string stamp )
+        {
+            try
+            {
+                var result = await _eventConstancyService.VerifyConstancyDocument(stamp);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         // POST api/<EventCounterController>

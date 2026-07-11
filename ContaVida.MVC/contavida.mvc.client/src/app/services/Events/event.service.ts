@@ -6,6 +6,7 @@ import { INewEventCounterModel } from '../../Models/EventCounter/INewEventCounte
 import { ICounterPrivacySetModel } from '../../Models/EventCounter/ICounterPrivacySetModel';
 import { TextValueItem, TextValueModel } from '../../Models/TextValueItem';
 import { ICounterDataModel } from '../../Models/EventCounter/ICounterDataModel';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +63,15 @@ export class EventService {
     return this.http.delete(this.baseUrl +"api/EventCounter/deleteCounterByID?counterID=" + eventID)
   }
 
+    getPDF(id: string): Observable<Blob> {
+    var url = this.baseUrl;
+    return this.http.get<Blob>(url + "api/EventCounter/getConstancyDocument?counterID=" + id);
+  }
 
+    verifyDocumentStamp(stamp: string) {
+    var url = this.baseUrl;
+    return this.http.get(url + "api/EventCounter/getVerificationByStamp?stamp=" + stamp);
+  }
 
 
   getMonths(){
