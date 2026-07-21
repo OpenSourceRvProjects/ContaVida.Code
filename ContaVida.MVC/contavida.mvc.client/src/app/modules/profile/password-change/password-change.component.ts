@@ -21,7 +21,7 @@ export class PasswordChangeComponent {
   constructor(public activeModal: NgbActiveModal, public acountService: AccountService) { }
   
   changePassword () {
-    debugger;
+    
     if (this.passwordConfirm !== this.passwordChangeModel.newPassword){
       alert("La confirmación de tu nuevo password no coincide, intentalo de nuevo");
       return;
@@ -31,7 +31,7 @@ export class PasswordChangeComponent {
     .subscribe({next: ()=>{
       window.location.href = "/";
     }, error: (err)=>{
-      debugger;
+      
       alert("Error :" + err.error.message);
     }});
 

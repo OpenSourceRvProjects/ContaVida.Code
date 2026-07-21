@@ -22,7 +22,6 @@ export class ConstancyVerifierComponent {
 
     ngOnInit(){
       this.sub = this.route.queryParams.subscribe(params => {
-        debugger;
         this.stamp = params['stamp'];
         // alert("Stamp reaached " + this.stamp)
         this.veryfyCert();

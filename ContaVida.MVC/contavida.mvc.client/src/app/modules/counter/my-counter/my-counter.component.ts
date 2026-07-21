@@ -62,7 +62,6 @@ export class MyCounterComponent {
     this.localStorageService.avtiveCounterView();
     this.getDoggie();
     this.sub = this.route.queryParams.subscribe(params => {
-      debugger;
       this.id = params['id'];
       this.isShared = Boolean(params['shared'])
       this.getEvent();
@@ -81,7 +80,6 @@ export class MyCounterComponent {
           this.phrase = data.counterRandomPhrase;
           this.author = data.counterRandomAuthor;
           this.putCounterTimeData();
-          debugger;
           if (this.refreshTime !== 0) {
             this.isRefreshActive = true;
             interval(1000 * 60 * this.refreshTime)
@@ -164,7 +162,6 @@ export class MyCounterComponent {
   }
 
   changeRefreshOption(event: any) {
-    debugger;
     const isChecked = (event.target as any).checked;
 
     const setting: ICounterRefreshTimerSetModel = { isRefresherActivate: isChecked }
