@@ -14,7 +14,6 @@ export class MaintenanceComponent implements OnInit {
 
   img: string = "maintenancePageImg.jpeg"
   ngOnInit() {
-    debugger;
     this.accountService.blockMaintenancePageIfNotApplicable();
     this.localStorageService.avtiveCounterView();
   }

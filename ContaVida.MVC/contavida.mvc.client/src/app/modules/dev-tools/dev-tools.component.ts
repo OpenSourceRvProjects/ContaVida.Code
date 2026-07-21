@@ -20,7 +20,6 @@ constructor(private modalService: NgbModal, public router: Router, private accou
     this.accountService.getSystemStackData().
       subscribe({
         next: (data) => {
-          debugger;
           this.systemData = data;
         }, error: (err) => { }
       });
