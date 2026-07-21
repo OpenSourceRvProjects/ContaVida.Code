@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
   }
 
   async ngOnInit() {
-    debugger;
     if (this.localStorage.getUserData())
       this.router.navigate(['/'])
 
@@ -112,10 +111,10 @@ export class LoginComponent implements OnInit {
     this.accountService.triggerGoogleLoginPrompt();
   }
   login() {
-
-    if (this.loginModel.userName.trim() === '' || this.loginModel.password.trim() === '')
+    if (this.loginModel.userName.trim() === '' || this.loginModel.password.trim() === ''){
       this.errorMessage = "El usuario y contraseña son obligatorios";
-
+      return;
+    }
     this.processing = true;
     this.accountService.login(this.loginModel)
       .subscribe({
