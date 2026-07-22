@@ -92,7 +92,6 @@ export class AccountService {
   getMaintenancePage() {
     this.http.get(this.baseUrl + `api/Account/maintenancePage`).subscribe({
       next: (data: any) => {
-        debugger;
         if (data.showMaintenancePage) {
           this.router.navigate(['/maintenancePage'])
         }
@@ -155,7 +154,6 @@ export class AccountService {
   blockMaintenancePageIfNotApplicable() {
     this.http.get(this.baseUrl + `api/Account/maintenancePage`).subscribe({
       next: (data: any) => {
-        debugger;
         if (!data.showMaintenancePage) {
           this.router.navigate(['/'])
         }
