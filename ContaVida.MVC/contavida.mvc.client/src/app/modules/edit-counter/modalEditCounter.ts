@@ -37,7 +37,6 @@ export class ModalEditComponent implements OnInit {
 
     this.eventService.getEventByID(this.selectedCounterToEdit.id)
     .subscribe({next : (data : any)=> {
-      debugger;
       this.selectedDetailedCounter = data;
       this.selectedHourToDetailedCounter = this.hoursForEditMode.find(f=> f.number == this.selectedDetailedCounter.hour)!;
       this.selectedMonthToDetailCounter = this.monthsForEditMode.find(f=> f.number == this.selectedDetailedCounter.month)!;
@@ -65,7 +64,6 @@ export class ModalEditComponent implements OnInit {
     this.eventService.editEventCounter(this.selectedDetailedCounter.counterID, this.isRelapse, this.selectedDetailedCounter,
       this.selectedRelapseReason, this.relapseComment)
     .subscribe({next: (data)=>{
-      debugger;
       this.activeModal.close();
       this.processing = false;
       this.isRelapse =  false;
