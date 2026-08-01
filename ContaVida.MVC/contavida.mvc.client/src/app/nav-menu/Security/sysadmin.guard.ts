@@ -16,7 +16,6 @@ export class SysadminGuard  {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    debugger;
     if (this.storageService.getUserData() && this.storageService.getUserData().isSysAdmin) {
       return true;
     }

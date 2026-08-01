@@ -17,12 +17,10 @@ export class App  {
 
   ngOnInit() {
     var currentDate = new Date();
-    debugger;
     if (currentDate <  new Date(2026, 0, 14))
     {
       this.accountService.getSystemStackData()
       .subscribe({next: (data: any)=>{
-        debugger;
         this.currentEnvironment = data.environment;
         if (this.currentEnvironment.toLowerCase() == "prod"){
           this.showUnderConstructionPage = true;

@@ -28,10 +28,8 @@ export class ImageCollectionComponent {
   }
 
   addImageToList() {
-    debugger;
     // https://drive.google.com/file/d/1fSH2GhZ6VFLtiGDMmGqx2fg0Sg4GIo4q/view?usp=sharing
     if (this.currentImageURL.startsWith("https://drive.google.com")){
-    debugger;
       var candidateID = this.currentImageURL.split("https://drive.google.com/file/d/")[1]
       var fileID = candidateID.split("/")[0];
       this.currentImageURL = "https://lh3.googleusercontent.com/d/" + fileID

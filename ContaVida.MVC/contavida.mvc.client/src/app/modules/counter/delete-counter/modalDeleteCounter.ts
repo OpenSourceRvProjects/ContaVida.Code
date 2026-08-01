@@ -21,7 +21,6 @@ export class ModalDeleteCounterComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal, private eventService: EventService) { }
     ngOnInit(): void {
-        debugger;
     this.uiTokenDelete = this.makeid(5);
 
   }
@@ -32,7 +31,6 @@ export class ModalDeleteCounterComponent implements OnInit {
     .subscribe({next: ()=> {
         window.location.href = "/counter/list"
     }, error: (err)=>{
-        debugger;
         if (err.status == 404)
             alert("Evento no encontrado");
         this.processing = false;

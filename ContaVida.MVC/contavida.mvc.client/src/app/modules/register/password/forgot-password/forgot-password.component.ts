@@ -39,7 +39,6 @@ export class ForgotPasswordComponent {
     }
 
     this.sub = this.route.queryParams.subscribe(params=>{
-      debugger;
       this.id = params['id'];
       if (this.id !== undefined){
         this.hasID = true;

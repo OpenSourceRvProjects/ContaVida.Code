@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
   }
 
   async ngOnInit() {
-    debugger;
     if (this.localStorage.getUserData())
       this.router.navigate(['/'])
 
@@ -50,13 +49,11 @@ export class LoginComponent implements OnInit {
       const credential = response.credential;
       this.accountService.googleLogin(credential).subscribe({
         next: (data) => {
-          debugger;
           this.localStorage.saveUserData(data);
           this.processing = false;
           this.router.navigate(['/']);
 
         }, error: (err) => {
-          debugger;
           this.processing = false;
           this.errorMessage = "Hubo un problema al conectarte con tu cuenta de google!, Probablemente aún no te registras con tu cuenta de google";
         }
@@ -112,15 +109,14 @@ export class LoginComponent implements OnInit {
     this.accountService.triggerGoogleLoginPrompt();
   }
   login() {
-
-    if (this.loginModel.userName.trim() === '' || this.loginModel.password.trim() === '')
+    if (this.loginModel.userName.trim() === '' || this.loginModel.password.trim() === ''){
       this.errorMessage = "El usuario y contraseña son obligatorios";
-
+      return;
+    }
     this.processing = true;
     this.accountService.login(this.loginModel)
       .subscribe({
         next: (data: any) => {
-          debugger;
           if (data.token != null) {
             this.localStorage.saveUserData(data);
             this.processing = false;
@@ -133,7 +129,6 @@ export class LoginComponent implements OnInit {
           }
         }
         , error: (err) => {
-          debugger;
           if (err.status == 429) {
             alert("Demasiados intentos, intentalo en unos momentos mas");
           }
